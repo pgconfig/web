@@ -1,16 +1,18 @@
 /*
  * highlight.js GitHub Dark theme overrides
  * Applied only in dark mode (auto or forced via data-theme)
+ * Uses Bulma's dark scheme-main-ter for background and border colors
+ * to stay consistent with the rest of the dark theme.
  */
 
 @media (prefers-color-scheme: dark) {
   .hljs {
-    color: #c9d1d9;
-    background: #0d1117;
+    color: var(--bulma-text);
+    background: var(--bulma-scheme-main-ter);
   }
   pre {
-    background: #0d1117 !important;
-    border-color: #30363d !important;
+    background: var(--bulma-scheme-main-ter) !important;
+    border-color: var(--bulma-border) !important;
   }
   .hljs-doctag,
   .hljs-keyword,
@@ -60,37 +62,17 @@
     color: #7ee787;
   }
   .hljs-subst {
-    color: #c9d1d9;
-  }
-  .hljs-section {
-    color: #1f6feb;
-  }
-  .hljs-bullet {
-    color: #f2cc60;
-  }
-  .hljs-emphasis {
-    color: #c9d1d9;
-  }
-  .hljs-strong {
-    color: #c9d1d9;
-  }
-  .hljs-addition {
-    color: #aff5b4;
-    background-color: #033a16;
-  }
-  .hljs-deletion {
-    color: #ffdcd7;
-    background-color: #67060c;
+    color: var(--bulma-text);
   }
 }
 
 [data-theme="dark"] .hljs {
-  color: #c9d1d9;
-  background: #0d1117;
+  color: var(--bulma-text);
+  background: var(--bulma-scheme-main-ter);
 }
 [data-theme="dark"] pre {
-  background: #0d1117 !important;
-  border-color: #30363d !important;
+  background: var(--bulma-scheme-main-ter) !important;
+  border-color: var(--bulma-border) !important;
 }
 [data-theme="dark"] .hljs-doctag,
 [data-theme="dark"] .hljs-keyword,
@@ -140,25 +122,5 @@
   color: #7ee787;
 }
 [data-theme="dark"] .hljs-subst {
-  color: #c9d1d9;
-}
-[data-theme="dark"] .hljs-section {
-  color: #1f6feb;
-}
-[data-theme="dark"] .hljs-bullet {
-  color: #f2cc60;
-}
-[data-theme="dark"] .hljs-emphasis {
-  color: #c9d1d9;
-}
-[data-theme="dark"] .hljs-strong {
-  color: #c9d1d9;
-}
-[data-theme="dark"] .hljs-addition {
-  color: #aff5b4;
-  background-color: #033a16;
-}
-[data-theme="dark"] .hljs-deletion {
-  color: #ffdcd7;
-  background-color: #67060c;
+  color: var(--bulma-text);
 }

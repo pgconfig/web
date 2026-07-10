@@ -1,13 +1,14 @@
 /**
  * GitHub-style alerts with Bulma components
  * Custom styling to make Bulma messages look like GitHub alerts
+ * Uses Bulma v1 CSS variables so colors auto-adapt to dark mode.
  */
 
 /* Override Bulma message styles for GitHub-like appearance */
 .message.github-alert {
   border-radius: 6px;
   border-left: 4px solid;
-  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  box-shadow: 0 0.5em 1em -0.125em rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .message.github-alert .message-header {
@@ -79,125 +80,55 @@
   background-color: var(--bulma-scheme-main-bis);
 }
 
-/* NOTE - Blue */
+/*
+ * Alert color schemes using Bulma v1 CSS variables.
+ * - border-left uses the base color (var(--bulma-{color}))
+ * - header text uses the bold variant (dark in light mode, light in dark mode)
+ * - background uses scheme-main-bis so alerts stand out from the page body
+ * All colors auto-adapt to dark mode via Bulma's soft/bold system.
+ */
+
+/* NOTE - Info/Blue */
 .message.is-info.github-alert {
-  background-color: var(--bulma-scheme-main);
-  border-left-color: #0969da;
+  background-color: var(--bulma-scheme-main-bis);
+  border-left-color: var(--bulma-info);
 }
-
 .message.is-info.github-alert .message-header {
-  color: #0969da;
+  color: var(--bulma-info-bold);
 }
 
-/* TIP - Green */
+/* TIP - Success/Green */
 .message.is-success.github-alert {
-  background-color: var(--bulma-scheme-main);
-  border-left-color: #1a7f37;
+  background-color: var(--bulma-scheme-main-bis);
+  border-left-color: var(--bulma-success);
 }
-
 .message.is-success.github-alert .message-header {
-  color: #1a7f37;
+  color: var(--bulma-success-bold);
 }
 
-/* IMPORTANT - Purple */
+/* IMPORTANT - Link/Purple */
 .message.is-link.github-alert {
-  background-color: var(--bulma-scheme-main);
-  border-left-color: #8250df;
+  background-color: var(--bulma-scheme-main-bis);
+  border-left-color: var(--bulma-link);
 }
-
 .message.is-link.github-alert .message-header {
-  color: #8250df;
+  color: var(--bulma-link-bold);
 }
 
-/* WARNING - Orange/Yellow */
+/* WARNING - Warning/Yellow */
 .message.is-warning.github-alert {
-  background-color: var(--bulma-scheme-main);
-  border-left-color: #9a6700;
+  background-color: var(--bulma-scheme-main-bis);
+  border-left-color: var(--bulma-warning);
 }
-
 .message.is-warning.github-alert .message-header {
-  color: #9a6700;
+  color: var(--bulma-warning-bold);
 }
 
-/* CAUTION - Red */
+/* CAUTION - Danger/Red */
 .message.is-danger.github-alert {
-  background-color: var(--bulma-scheme-main);
-  border-left-color: #d1242f;
+  background-color: var(--bulma-scheme-main-bis);
+  border-left-color: var(--bulma-danger);
 }
-
 .message.is-danger.github-alert .message-header {
-  color: #d1242f;
-}
-
-/* Dark mode: adjust GitHub alert border/header colors for contrast */
-@media (prefers-color-scheme: dark) {
-  .message.is-info.github-alert {
-    border-left-color: #4493f8;
-  }
-  .message.is-info.github-alert .message-header {
-    color: #4493f8;
-  }
-
-  .message.is-success.github-alert {
-    border-left-color: #3fb950;
-  }
-  .message.is-success.github-alert .message-header {
-    color: #3fb950;
-  }
-
-  .message.is-link.github-alert {
-    border-left-color: #a371f7;
-  }
-  .message.is-link.github-alert .message-header {
-    color: #a371f7;
-  }
-
-  .message.is-warning.github-alert {
-    border-left-color: #d29922;
-  }
-  .message.is-warning.github-alert .message-header {
-    color: #d29922;
-  }
-
-  .message.is-danger.github-alert {
-    border-left-color: #f85149;
-  }
-  .message.is-danger.github-alert .message-header {
-    color: #f85149;
-  }
-}
-
-[data-theme="dark"] .message.is-info.github-alert {
-  border-left-color: #4493f8;
-}
-[data-theme="dark"] .message.is-info.github-alert .message-header {
-  color: #4493f8;
-}
-
-[data-theme="dark"] .message.is-success.github-alert {
-  border-left-color: #3fb950;
-}
-[data-theme="dark"] .message.is-success.github-alert .message-header {
-  color: #3fb950;
-}
-
-[data-theme="dark"] .message.is-link.github-alert {
-  border-left-color: #a371f7;
-}
-[data-theme="dark"] .message.is-link.github-alert .message-header {
-  color: #a371f7;
-}
-
-[data-theme="dark"] .message.is-warning.github-alert {
-  border-left-color: #d29922;
-}
-[data-theme="dark"] .message.is-warning.github-alert .message-header {
-  color: #d29922;
-}
-
-[data-theme="dark"] .message.is-danger.github-alert {
-  border-left-color: #f85149;
-}
-[data-theme="dark"] .message.is-danger.github-alert .message-header {
-  color: #f85149;
+  color: var(--bulma-danger-bold);
 }
