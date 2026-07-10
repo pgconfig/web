@@ -127,3 +127,10 @@
     @apply font-sans;
     }
 }
+
+.comparison-col-default {
+  @apply bg-muted;
+}
+.comparison-col-selected {
+  @apply bg-primary text-primary-foreground;
+}
