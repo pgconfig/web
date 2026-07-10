@@ -50,4 +50,7 @@ export default {
 </script>
 
 <style>
+.b-tabs .tab-content {
+  padding: 1rem 0 0;
+}
 </style>

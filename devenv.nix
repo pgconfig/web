@@ -2,17 +2,16 @@
 {
   packages = [
     pkgs.git
-    pkgs.bun
   ];
 
   languages.javascript = {
     enable = true;
     package = pkgs.nodejs_20;
-    yarn.enable = true;
+    npm.enable = true;
   };
 
-  scripts.install.exec = "yarn install";
-  scripts.dev.exec = "yarn serve";
+  scripts.install.exec = "npm install";
+  scripts.dev.exec = "npm run serve";
 
   enterShell = ''
     echo "Run 'devenv install' to install dependencies."

@@ -10,38 +10,36 @@
         </h2>
         <div class="columns is-desktop">
           <div class="column">
-            <b-field label="Operating system" label-position="inside">
-              <b-select
-                placeholder="Select one"
-                v-model="form.os_type"
-                expanded
-              >
-                <option value="linux">GNU/Linux Based</option>
-                <option value="windows">Windows Based</option>
-                <option value="unix">Unix Based</option>
-              </b-select>
-            </b-field>
+            <dropdown-select
+              label="Operating system"
+              v-model="form.os_type"
+              :options="[
+                { value: 'linux', label: 'GNU/Linux Based' },
+                { value: 'windows', label: 'Windows Based' },
+                { value: 'unix', label: 'Unix Based' },
+              ]"
+            ></dropdown-select>
           </div>
           <div class="column">
-            <b-field label="Architecture" label-position="inside">
-              <b-select placeholder="Select one" v-model="form.arch" expanded>
-                <option value="x86-64">64 Bits (x86-64)</option>
-                <option value="386">32 Bits (386)</option>
-              </b-select>
-            </b-field>
+            <dropdown-select
+              label="Architecture"
+              v-model="form.arch"
+              :options="[
+                { value: 'x86-64', label: '64 Bits (x86-64)' },
+                { value: '386', label: '32 Bits (386)' },
+              ]"
+            ></dropdown-select>
           </div>
           <div class="column">
-            <b-field label="Storage type" label-position="inside">
-              <b-select
-                placeholder="Select one"
-                v-model="form.drive_type"
-                expanded
-              >
-                <option value="HDD">HDD Storage</option>
-                <option value="SSD">SSD Storage</option>
-                <option value="SAN">Network Storage - NAS/SAN</option>
-              </b-select>
-            </b-field>
+            <dropdown-select
+              label="Storage type"
+              v-model="form.drive_type"
+              :options="[
+                { value: 'HDD', label: 'HDD Storage' },
+                { value: 'SSD', label: 'SSD Storage' },
+                { value: 'SAN', label: 'Network Storage - NAS/SAN' },
+              ]"
+            ></dropdown-select>
           </div>
         </div>
         <div class="columns is-desktop">
@@ -83,48 +81,43 @@
         </h2>
         <div class="columns is-mobile">
           <div class="column">
-            <b-field label="Application profile" label-position="inside">
-              <b-select
-                placeholder="Select one"
-                v-model="form.environment_name"
-                expanded
-              >
-                <option value="WEB">General web applications</option>
-                <option value="OLTP">
-                  ERP or long transaction applications
-                </option>
-                <option value="DW">DataWare house and BI Applications</option>
-                <option value="Mixed">DB and APP on the same server</option>
-                <option value="Desktop">Developer local machine</option>
-              </b-select>
-            </b-field>
+            <dropdown-select
+              label="Application profile"
+              v-model="form.environment_name"
+              :options="[
+                { value: 'WEB', label: 'General web applications' },
+                { value: 'OLTP', label: 'ERP or long transaction applications' },
+                { value: 'DW', label: 'DataWare house and BI Applications' },
+                { value: 'Mixed', label: 'DB and APP on the same server' },
+                { value: 'Desktop', label: 'Developer local machine' },
+              ]"
+            ></dropdown-select>
           </div>
         </div>
         <div class="columns is-mobile">
           <div class="column">
-            <b-field label="PostgreSQL Version" label-position="inside">
-              <b-select
-                placeholder="Select a version"
-                v-model="form.pg_version"
-                expanded
-              >
-                <option value="18">18 (Latest)</option>
-                <option value="17">17</option>
-                <option value="16">16</option>
-                <option value="15">15</option>
-                <option value="14">14</option>
-                <option value="13">13 (EOL)</option>
-                <option value="12">12 (EOL)</option>
-                <option value="11">11 (EOL)</option>
-                <option value="10">10 (EOL)</option>
-                <option value="9.6">9.6 (EOL)</option>
-                <option value="9.5">9.5 (EOL)</option>
-                <option value="9.4">9.4 (EOL)</option>
-                <option value="9.3">9.3 (EOL)</option>
-                <option value="9.2">9.2 (EOL)</option>
-                <option value="9.1">9.1 (EOL)</option>
-              </b-select>
-            </b-field>
+            <dropdown-select
+              label="PostgreSQL Version"
+              v-model="form.pg_version"
+              :parser="parseFloat"
+              :options="[
+                { value: 18, label: '18 (Latest)' },
+                { value: 17, label: '17' },
+                { value: 16, label: '16' },
+                { value: 15, label: '15' },
+                { value: 14, label: '14' },
+                { value: 13, label: '13 (EOL)' },
+                { value: 12, label: '12 (EOL)' },
+                { value: 11, label: '11 (EOL)' },
+                { value: 10, label: '10 (EOL)' },
+                { value: '9.6', label: '9.6 (EOL)' },
+                { value: '9.5', label: '9.5 (EOL)' },
+                { value: '9.4', label: '9.4 (EOL)' },
+                { value: '9.3', label: '9.3 (EOL)' },
+                { value: '9.2', label: '9.2 (EOL)' },
+                { value: '9.1', label: '9.1 (EOL)' },
+              ]"
+            ></dropdown-select>
           </div>
         </div>
       </div>
@@ -134,9 +127,13 @@
 
 <script>
 import lodash from "lodash";
+import DropdownSelect from "./DropdownSelect.vue";
 
 export default {
   name: "Form",
+  components: {
+    DropdownSelect,
+  },
   data() {
     return {
       form: {
