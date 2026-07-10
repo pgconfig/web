@@ -1,0 +1,11 @@
+/*
+ * Theme overrides to restore the original Bulma 0.9 purple primary color.
+ * Bulma v1 changed primary from purple (#7957d5) to teal (#00d1b2).
+ * This restores the original look while keeping everything else from Bulma v1.
+ */
+
+:root {
+  --bulma-primary-h: 256deg;
+  --bulma-primary-s: 60%;
+  --bulma-primary-l: 59%;
+}
