@@ -1,18 +1,17 @@
-FROM node:20
-
-RUN mkdir -p /app/node_modules && chown -R node:node /app
-
-USER node
+FROM node:20 AS build
 
 WORKDIR /app
 
-COPY package.json .
-COPY yarn.lock .
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-RUN yarn install
+COPY . .
+RUN yarn build
 
-COPY --chown=node:node . .
+FROM nginx:alpine
 
-EXPOSE 8080
+COPY --from=build /app/dist /usr/share/nginx/html
 
-CMD [ "yarn", "serve" ]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

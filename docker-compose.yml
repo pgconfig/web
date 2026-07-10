@@ -2,7 +2,7 @@ services:
   webapp:
     build: .
     ports:
-      - 8080:8080
+      - 8080:80
     working_dir: /app
     stdin_open: true
     tty: true
