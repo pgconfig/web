@@ -28,7 +28,7 @@
                   class="navbar is-rounded"
                 >
                   <div class="navbar-menu is-active">
-                    <div class="navbar-end">
+                    <div class="navbar-start">
                       <a class="navbar-item is-active">Home</a>
                       <a
                         rel="noreferrer"
@@ -278,7 +278,6 @@ export default {
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
-  flex: 1;
   min-height: auto;
 }
 .navbar.is-rounded .navbar-menu {
