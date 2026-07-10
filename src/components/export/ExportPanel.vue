@@ -192,13 +192,20 @@ onMounted(() => {
         <Copy class="size-4" />
         Copy
       </Button>
-      <pre class="bg-muted border rounded-md overflow-x-auto"><code ref="codeBlock" :class="highlightLang"></code></pre>
+      <pre class="export-code"><code ref="codeBlock" :class="['hljs', highlightLang]"></code></pre>
     </div>
   </div>
 </template>
 
 <style scoped>
-pre :deep(.hljs) {
+@reference "../../assets/globals.css";
+
+pre.export-code {
+  @apply bg-muted border rounded-md overflow-x-auto;
+}
+
+pre.export-code :deep(.hljs) {
+  @apply bg-transparent text-foreground;
   padding: 1em;
 }
 </style>

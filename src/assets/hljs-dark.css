@@ -1,7 +1,12 @@
 /*
- * highlight.js GitHub Dark theme overrides
- * Applied only in dark mode (auto or forced via .dark class)
+ * highlight.js theme overrides aligned with shadcn tokens.
+ * Light mode uses github.css syntax colors; dark mode uses GitHub Dark palette.
  */
+
+/* Light mode: let pre/export wrapper provide muted background */
+.hljs {
+  background: transparent;
+}
 
 @media (prefers-color-scheme: dark) {
   .hljs {
