@@ -271,17 +271,23 @@ export default {
 <style>
 .nav-wrapper {
   display: flex;
-  align-items: stretch;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.4rem;
 }
 .navbar.is-rounded {
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   flex: 1;
+  min-height: auto;
+}
+.navbar.is-rounded .navbar-menu {
+  padding: 0;
 }
 .navbar.is-rounded .navbar-item {
   color: rgba(255, 255, 255, 0.7);
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
 }
 .navbar.is-rounded .navbar-item:hover {
   color: #fff;
@@ -292,14 +298,15 @@ export default {
   background-color: rgba(255, 255, 255, 0.15);
 }
 .theme-toggle {
-  border-radius: 8px;
-  padding: 0 0.75rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
+  height: auto;
 }
 .theme-toggle:hover {
   color: #fff;
