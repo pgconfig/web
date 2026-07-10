@@ -14,6 +14,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { BookOpen, Github, Home, Moon, Sun } from "lucide-vue-next"
+import ConfigFilters from "@/components/filters/ConfigFilters.vue"
 
 defineProps<{
   isLoading?: boolean
@@ -42,9 +43,7 @@ function goHome() {
       </SidebarHeader>
 
       <SidebarContent class="group-data-[collapsible=icon]:hidden overflow-y-auto">
-        <div class="p-4 text-sm text-muted-foreground">
-          Filters placeholder
-        </div>
+        <ConfigFilters @changing-form="emit('form-change', $event)" />
       </SidebarContent>
 
       <SidebarFooter>
