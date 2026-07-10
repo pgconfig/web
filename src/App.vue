@@ -21,12 +21,12 @@
               <p class="subtitle">Configuration Builder</p>
             </div>
             <div class="column">
-              <nav
-                role="navigation"
-                aria-label="main navigation"
-                class="navbar is-rounded"
-              >
-                <div class="container">
+              <div class="nav-wrapper">
+                <nav
+                  role="navigation"
+                  aria-label="main navigation"
+                  class="navbar is-rounded"
+                >
                   <div class="navbar-menu is-active">
                     <div class="navbar-end">
                       <a class="navbar-item is-active">Home</a>
@@ -35,26 +35,26 @@
                         href="https://github.com/pgconfig/api"
                         target="_blank"
                         class="navbar-item"
-                        ><i class="fa-fw fab fa-github mr-2"></i> Contribute
+                    ><i class="fa-fw fab fa-github mr-2"></i> Contribute
                       </a>
                       <a
                         rel="noreferrer"
                         href="https://docs.pgconfig.org"
                         target="_blank"
                         class="navbar-item"
-                        ><i class="fa-fw fas fa-book mr-2"></i> Documentation
+                    ><i class="fa-fw fas fa-book mr-2"></i> Documentation
                       </a>
                     </div>
                   </div>
-                </div>
-              </nav>
-              <button
-                class="button theme-toggle"
-                @click="toggleTheme"
-                :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-              >
-                <i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
-              </button>
+                </nav>
+                <button
+                  class="button theme-toggle"
+                  @click="toggleTheme"
+                  :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+                >
+                  <i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -269,14 +269,40 @@ export default {
 </script>
 
 <style>
+.nav-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
 .navbar.is-rounded {
   border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  flex: 1;
+}
+.navbar.is-rounded .navbar-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+.navbar.is-rounded .navbar-item:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.navbar.is-rounded .navbar-item.is-active {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 .theme-toggle {
   border-radius: 8px;
-  margin-left: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border: none;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
+  font-size: 1.1rem;
+}
+.theme-toggle:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 </style>
