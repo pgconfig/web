@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Toaster />
     <section class="hero is-small is-dark is-bold">
       <div class="hero-body is-align-items-stretch">
         <div class="container">
@@ -99,6 +100,7 @@
 <script>
 import ConfigForm from "./components/Form.vue";
 import Tabs from "./components/Tabs.vue";
+import { Toaster } from "@/components/ui/sonner";
 
 export default {
   name: "App",
@@ -117,6 +119,7 @@ export default {
   components: {
     ConfigForm,
     Tabs,
+    Toaster,
   },
   watch: {
     urlArgs: {
