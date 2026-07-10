@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import "./assets/globals.css";
 import Buefy from "buefy";
 import "buefy/dist/css/buefy.css";
 import "./assets/theme-overrides.css";
