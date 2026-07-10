@@ -3,7 +3,7 @@
     <div v-for="item in formattedConfigs" :key="item.name" class="container content">
       <h3 class="subtitle">{{ item.name }}</h3>
       <b-table :data="item.params" detailed detail-key="name" :columns="columns" :hoverable="true">
-        <template slot="detail" slot-scope="props">
+        <template #detail="props">
           <div class="columns is-mobile">
             <div class="column content">
               <div class="abstract-text" v-html="renderMarkdown(props.row.documentation.abstract)"></div>

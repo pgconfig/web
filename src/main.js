@@ -1,31 +1,25 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import Buefy from "buefy";
+import "buefy/dist/css/buefy.css";
+import { createRouter, createWebHistory } from "vue-router";
+import "highlight.js/styles/github.css";
 import http from "./http";
-import "buefy/dist/buefy.css";
 import App from "./App.vue";
-import VueClipboard from 'vue-clipboard2';
-import VueRouter from 'vue-router';
-import 'highlight.js/styles/github.css';
 
-Vue.use(VueRouter);
-Vue.use(Buefy, {
-  defaultIconPack: 'fas'
-});
+const app = createApp(App);
 
-Vue.use(VueClipboard);
-
-VueClipboard.config.autoSetContainer = true;
-Vue.config.productionTip = false;
-Vue.prototype.$http = http;
-
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes: [
-    { path: '/', component: App, alias: '/tuning' }
-  ]
+    { path: "/", component: App, alias: "/tuning" },
+  ],
 });
 
-new Vue({
-  render: h => h(App),
-  router,
-}).$mount("#app");
+app.use(router);
+app.use(Buefy, {
+  defaultIconPack: "fas",
+});
 
+app.config.globalProperties.$http = http;
+
+app.mount("#app");

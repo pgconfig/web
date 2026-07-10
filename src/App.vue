@@ -83,7 +83,7 @@
     </footer>
     <b-loading
       :is-full-page="true"
-      :active.sync="isLoading"
+      v-model="isLoading"
       :can-cancel="false"
     ></b-loading>
   </div>

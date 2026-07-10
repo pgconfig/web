@@ -35,9 +35,7 @@
       <div class="container code-container">
         <b-button
           type="is-primary is-light"
-          v-clipboard:copy="exportedResponse.output"
-          v-clipboard:success="onCopy"
-          v-clipboard:error="onError"
+          @click="copyToClipboard"
           size="is-small"
           class="copy-button"
         >
@@ -128,6 +126,14 @@ export default {
     };
   },
   methods: {
+    async copyToClipboard() {
+      try {
+        await navigator.clipboard.writeText(String(this.exportedResponse.output));
+        this.onCopy();
+      } catch (e) {
+        this.onError(e);
+      }
+    },
     onCopy: function () {
       this.$buefy.snackbar.open({
         message: `Copied to clipboard`,
