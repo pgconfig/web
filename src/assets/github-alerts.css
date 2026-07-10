@@ -1,10 +1,7 @@
 /**
- * GitHub-style alerts with Bulma components
- * Custom styling to make Bulma messages look like GitHub alerts
- * Uses Bulma v1 CSS variables so colors auto-adapt to dark mode.
+ * GitHub-style alerts for markdown callouts
  */
 
-/* Override Bulma message styles for GitHub-like appearance */
 .message.github-alert {
   border-radius: 6px;
   border-left: 4px solid;
@@ -30,10 +27,9 @@
   color: inherit;
 }
 
-/* Code blocks inside alerts */
 .message.github-alert .message-body pre {
-  background-color: var(--bulma-scheme-main-ter);
-  border: 1px solid var(--bulma-border-weak);
+  background-color: var(--muted);
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 12px;
   margin: 8px 0;
@@ -41,7 +37,7 @@
 }
 
 .message.github-alert .message-body code {
-  background-color: var(--bulma-code-background);
+  background-color: var(--muted);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 85%;
@@ -57,7 +53,6 @@
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
-/* Tables inside alerts */
 .message.github-alert .message-body table {
   margin: 8px 0;
   border-collapse: collapse;
@@ -66,69 +61,68 @@
 
 .message.github-alert .message-body table th,
 .message.github-alert .message-body table td {
-  border: 1px solid var(--bulma-border-weak);
+  border: 1px solid var(--border);
   padding: 6px 13px;
   text-align: left;
 }
 
 .message.github-alert .message-body table th {
-  background-color: var(--bulma-scheme-main-ter);
+  background-color: var(--muted);
   font-weight: 600;
 }
 
 .message.github-alert .message-body table tbody tr:nth-child(even) {
-  background-color: var(--bulma-scheme-main-bis);
+  background-color: var(--accent);
 }
 
-/*
- * Alert color schemes using Bulma v1 CSS variables.
- * - border-left uses the base color (var(--bulma-{color}))
- * - header text uses the bold variant (dark in light mode, light in dark mode)
- * - background uses scheme-main-bis so alerts stand out from the page body
- * All colors auto-adapt to dark mode via Bulma's soft/bold system.
- */
-
-/* NOTE - Info/Blue */
 .message.is-info.github-alert {
-  background-color: var(--bulma-scheme-main-bis);
-  border-left-color: var(--bulma-info);
+  background-color: var(--muted);
+  border-left-color: #3b82f6;
 }
 .message.is-info.github-alert .message-header {
-  color: var(--bulma-info-bold);
+  color: #2563eb;
+}
+.dark .message.is-info.github-alert .message-header {
+  color: #60a5fa;
 }
 
-/* TIP - Success/Green */
 .message.is-success.github-alert {
-  background-color: var(--bulma-scheme-main-bis);
-  border-left-color: var(--bulma-success);
+  background-color: var(--muted);
+  border-left-color: #22c55e;
 }
 .message.is-success.github-alert .message-header {
-  color: var(--bulma-success-bold);
+  color: #16a34a;
+}
+.dark .message.is-success.github-alert .message-header {
+  color: #4ade80;
 }
 
-/* IMPORTANT - Link/Purple */
 .message.is-link.github-alert {
-  background-color: var(--bulma-scheme-main-bis);
-  border-left-color: var(--bulma-link);
+  background-color: var(--muted);
+  border-left-color: #a855f7;
 }
 .message.is-link.github-alert .message-header {
-  color: var(--bulma-link-bold);
+  color: #9333ea;
+}
+.dark .message.is-link.github-alert .message-header {
+  color: #c084fc;
 }
 
-/* WARNING - Warning/Yellow */
 .message.is-warning.github-alert {
-  background-color: var(--bulma-scheme-main-bis);
-  border-left-color: var(--bulma-warning);
+  background-color: var(--muted);
+  border-left-color: #eab308;
 }
 .message.is-warning.github-alert .message-header {
-  color: var(--bulma-warning-bold);
+  color: #ca8a04;
+}
+.dark .message.is-warning.github-alert .message-header {
+  color: #facc15;
 }
 
-/* CAUTION - Danger/Red */
 .message.is-danger.github-alert {
-  background-color: var(--bulma-scheme-main-bis);
-  border-left-color: var(--bulma-danger);
+  background-color: var(--muted);
+  border-left-color: var(--destructive);
 }
 .message.is-danger.github-alert .message-header {
-  color: var(--bulma-danger-bold);
+  color: var(--destructive);
 }
