@@ -273,6 +273,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  justify-content: flex-end;
 }
 .navbar.is-rounded {
   border-radius: 6px;
