@@ -300,7 +300,7 @@ export default {
 .theme-toggle {
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   color: rgba(255, 255, 255, 0.8);

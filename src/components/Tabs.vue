@@ -51,6 +51,6 @@ export default {
 
 <style>
 .b-tabs .tab-content {
-  padding: 0;
+  padding: 1rem 0 0;
 }
 </style>

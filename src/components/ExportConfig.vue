@@ -2,28 +2,23 @@
   <div>
     <div class="columns is-desktop is-vcentered">
       <div class="column">
-        <b-field label="Export Format" label-position="inside">
-          <b-select v-model="exportForm.format" expanded>
-            <option value="alter_system">ALTER SYSTEM commands</option>
-            <option value="conf">UNIX-like config file</option>
-            <option value="stackgres">StackGres-like YAML file</option>
-            <!-- <option value="json">JSON output</option> -->
-          </b-select>
-        </b-field>
+        <dropdown-select
+          label="Export Format"
+          v-model="exportForm.format"
+          :options="[
+            { value: 'alter_system', label: 'ALTER SYSTEM commands' },
+            { value: 'conf', label: 'UNIX-like config file' },
+            { value: 'stackgres', label: 'StackGres-like YAML file' },
+          ]"
+        ></dropdown-select>
       </div>
       <div class="column">
-        <b-field label="Log Format" label-position="inside">
-          <b-select
-            v-model="exportForm.log_format"
-            :disabled="showLogFormat"
-            expanded
-          >
-            <option value="stderr">Standard Error output</option>
-            <option value="csvlog">Comma-separated values</option>
-            <option value="syslog">Syslog daemon</option>
-            <option v-if="supportsJsonLog" value="jsonlog">JSON Log</option>
-          </b-select>
-        </b-field>
+        <dropdown-select
+          label="Log Format"
+          v-model="exportForm.log_format"
+          :disabled="showLogFormat"
+          :options="logFormatOptions"
+        ></dropdown-select>
       </div>
       <div class="column">
         <b-switch v-model="exportForm.include_pgbadger"
@@ -54,6 +49,7 @@ import hljs from 'highlight.js/lib/core';
 import yaml from 'highlight.js/lib/languages/yaml';
 import sql from 'highlight.js/lib/languages/sql';
 import ini from 'highlight.js/lib/languages/ini';
+import DropdownSelect from './DropdownSelect.vue';
 
 hljs.registerLanguage('yaml', yaml);
 hljs.registerLanguage('sql', sql);
@@ -61,6 +57,9 @@ hljs.registerLanguage('ini', ini);
 
 export default {
   name: "ExportConfig",
+  components: {
+    DropdownSelect,
+  },
   props: {
     exportedResponse: {
       type: Object,
@@ -153,6 +152,17 @@ export default {
     },
   },
   computed: {
+    logFormatOptions() {
+      const opts = [
+        { value: 'stderr', label: 'Standard Error output' },
+        { value: 'csvlog', label: 'Comma-separated values' },
+        { value: 'syslog', label: 'Syslog daemon' },
+      ];
+      if (this.supportsJsonLog) {
+        opts.push({ value: 'jsonlog', label: 'JSON Log' });
+      }
+      return opts;
+    },
     supportsJsonLog() {
       return parseFloat(this.pgVersion) >= 15;
     },
