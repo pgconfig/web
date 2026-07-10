@@ -286,8 +286,8 @@ export default {
 }
 .navbar.is-rounded .navbar-item {
   color: rgba(255, 255, 255, 0.7);
-  padding: 0.35rem 0.6rem;
-  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
 }
 .navbar.is-rounded .navbar-item:hover {
   color: #fff;
@@ -299,13 +299,13 @@ export default {
 }
 .theme-toggle {
   border-radius: 6px;
-  padding: 0.35rem 0.55rem;
+  padding: 0.5rem 0.65rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 1rem;
   height: auto;
 }
 .theme-toggle:hover {
