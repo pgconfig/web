@@ -20,7 +20,7 @@
               <p class="title" style="padding-top: 15px">PostgreSQL</p>
               <p class="subtitle">Configuration Builder</p>
             </div>
-            <div class="column">
+            <div class="column is-flex is-align-items-center is-justify-content-flex-end">
               <div class="nav-wrapper">
                 <nav
                   role="navigation"
@@ -271,7 +271,7 @@ export default {
 <style>
 .nav-wrapper {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0.4rem;
   justify-content: flex-end;
 }
@@ -299,7 +299,7 @@ export default {
 }
 .theme-toggle {
   border-radius: 6px;
-  padding: 0.5rem 0.65rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
@@ -307,6 +307,8 @@ export default {
   cursor: pointer;
   font-size: 1rem;
   height: auto;
+  display: inline-flex;
+  align-items: center;
 }
 .theme-toggle:hover {
   color: #fff;
