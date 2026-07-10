@@ -132,5 +132,6 @@
   @apply bg-muted;
 }
 .comparison-col-selected {
-  @apply bg-primary text-primary-foreground;
+  @apply text-white;
+  background-color: #00d1b2;
 }

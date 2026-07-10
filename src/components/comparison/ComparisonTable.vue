@@ -6,14 +6,13 @@ import {
   getExpandedRowModel,
   useVueTable,
 } from "@tanstack/vue-table"
-import { marked } from "marked"
-import { ChevronDown, ChevronRight, FileText, Lightbulb } from "lucide-vue-next"
+import { ChevronDown, ChevronRight } from "lucide-vue-next"
 import { toast } from "vue-sonner"
 import { formatConfigs } from "@/services/formatters"
-import { configureMarked } from "@/utils/markdownAlerts"
 import { valueUpdater } from "@/components/ui/table/utils"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import ComparisonRowDetail from "@/components/comparison/ComparisonRowDetail.vue"
 import {
   Table,
   TableBody,
@@ -22,9 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import "@/assets/github-alerts.css"
-
-configureMarked(marked)
 
 const ALL_ENVS = ["web", "oltp", "dw", "mixed", "desktop"]
 
@@ -118,15 +114,6 @@ onMounted(() => {
   )
 })
 
-function confURL(param) {
-  return `https://postgresqlco.nf/en/doc/param/${param}/${props.pgVersion}/`
-}
-
-function renderMarkdown(text) {
-  if (!text) return ""
-  return marked(text, { breaks: true })
-}
-
 function isSelected(env, currentEnv) {
   return env.toUpperCase() === currentEnv.toUpperCase()
 }
@@ -150,85 +137,6 @@ function cellClass(column, currentEnv) {
   }
   if (meta?.env) return "font-mono"
   return ""
-}
-
-function renderDetailPanel(row, pgVersion) {
-  const documentation = row.original.documentation
-  if (!documentation) return null
-
-  const recommendations = documentation.recomendations
-    ? Object.entries(documentation.recomendations).map(([desc, url]) =>
-        h("li", { key: desc }, [
-          h(
-            "a",
-            { href: url, target: "_blank", class: "text-primary underline" },
-            desc
-          ),
-        ])
-      )
-    : null
-
-  return h("div", { class: "grid grid-cols-1 gap-4 md:grid-cols-2" }, [
-    h("div", { class: "prose prose-sm max-w-none dark:prose-invert" }, [
-      h("div", {
-        class: "abstract-text",
-        innerHTML: renderMarkdown(documentation.abstract),
-      }),
-      recommendations
-        ? [
-            h("p", "Suggested readings:"),
-            h("ul", recommendations),
-          ]
-        : null,
-    ]),
-    h("div", { class: "rounded-lg border bg-card p-4 text-card-foreground" }, [
-      h("div", { class: "space-y-3" }, [
-        h("div", [
-          h("strong", row.original.name),
-          h(
-            "small",
-            { class: "text-muted-foreground" },
-            ` (${documentation.type})`
-          ),
-        ]),
-        ...(documentation.details || []).map((detail) =>
-          h("p", { key: detail, class: "text-sm" }, detail)
-        ),
-        h("div", { class: "flex flex-wrap gap-2" }, [
-          h(
-            Button,
-            {
-              as: "a",
-              href: confURL(row.original.name),
-              target: "_blank",
-            },
-            () => [
-              h(Lightbulb, { class: "size-4" }),
-              h("span", [
-                "Learn more on Postgresql",
-                h("strong", "co.nf"),
-              ]),
-            ]
-          ),
-          documentation.url
-            ? h(
-                Button,
-                {
-                  as: "a",
-                  variant: "outline",
-                  href: documentation.url,
-                  target: "_blank",
-                },
-                () => [
-                  h(FileText, { class: "size-4" }),
-                  h("span", "Check the docs"),
-                ]
-              )
-            : null,
-        ]),
-      ]),
-    ]),
-  ])
 }
 
 const ComparisonCategoryTable = defineComponent({
@@ -347,11 +255,14 @@ const ComparisonCategoryTable = defineComponent({
                           TableCell,
                           {
                             colspan: row.getVisibleCells().length,
-                            class: "p-4",
+                            class: "comparison-detail-cell p-4",
                           },
                           {
                             default: () =>
-                              renderDetailPanel(row, categoryProps.pgVersion),
+                              h(ComparisonRowDetail, {
+                                row: row.original,
+                                pgVersion: categoryProps.pgVersion,
+                              }),
                           }
                         ),
                     }
@@ -404,5 +315,38 @@ const ComparisonCategoryTable = defineComponent({
 .comparison-tables :deep(th:first-child),
 .comparison-tables :deep(td:first-child) {
   width: 2.5rem;
+}
+
+.comparison-tables :deep(td.comparison-detail-cell) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.comparison-detail-btn-primary {
+  background-color: #00d1b2;
+  color: #fff;
+}
+
+.comparison-detail-btn-primary:hover {
+  background-color: #00c4a7;
+}
+
+.comparison-detail-btn-secondary {
+  background-color: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.comparison-detail-btn-secondary:hover {
+  background-color: var(--muted);
+}
+
+.comparison-detail-docs :deep(p) {
+  margin-bottom: 0.75rem;
+}
+
+.comparison-detail-docs :deep(p:last-child) {
+  margin-bottom: 0;
 }
 </style>

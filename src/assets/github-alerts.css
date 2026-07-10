@@ -76,9 +76,45 @@
 }
 
 .message.is-info.github-alert {
-  background-color: var(--muted);
+  background-color: #eff6ff;
   border-left-color: #3b82f6;
 }
+.dark .message.is-info.github-alert {
+  background-color: color-mix(in oklch, #3b82f6 12%, var(--card));
+}
+
+.message.is-success.github-alert {
+  background-color: #f0fdf4;
+  border-left-color: #22c55e;
+}
+.dark .message.is-success.github-alert {
+  background-color: color-mix(in oklch, #22c55e 12%, var(--card));
+}
+
+.message.is-link.github-alert {
+  background-color: #faf5ff;
+  border-left-color: #a855f7;
+}
+.dark .message.is-link.github-alert {
+  background-color: color-mix(in oklch, #a855f7 12%, var(--card));
+}
+
+.message.is-warning.github-alert {
+  background-color: #fffbeb;
+  border-left-color: #eab308;
+}
+.dark .message.is-warning.github-alert {
+  background-color: color-mix(in oklch, #eab308 12%, var(--card));
+}
+
+.message.is-danger.github-alert {
+  background-color: #fef2f2;
+  border-left-color: var(--destructive);
+}
+.dark .message.is-danger.github-alert {
+  background-color: color-mix(in oklch, var(--destructive) 12%, var(--card));
+}
+
 .message.is-info.github-alert .message-header {
   color: #2563eb;
 }
@@ -86,10 +122,6 @@
   color: #60a5fa;
 }
 
-.message.is-success.github-alert {
-  background-color: var(--muted);
-  border-left-color: #22c55e;
-}
 .message.is-success.github-alert .message-header {
   color: #16a34a;
 }
@@ -97,10 +129,6 @@
   color: #4ade80;
 }
 
-.message.is-link.github-alert {
-  background-color: var(--muted);
-  border-left-color: #a855f7;
-}
 .message.is-link.github-alert .message-header {
   color: #9333ea;
 }
@@ -108,10 +136,6 @@
   color: #c084fc;
 }
 
-.message.is-warning.github-alert {
-  background-color: var(--muted);
-  border-left-color: #eab308;
-}
 .message.is-warning.github-alert .message-header {
   color: #ca8a04;
 }
@@ -119,10 +143,19 @@
   color: #facc15;
 }
 
-.message.is-danger.github-alert {
-  background-color: var(--muted);
-  border-left-color: var(--destructive);
-}
 .message.is-danger.github-alert .message-header {
   color: var(--destructive);
+}
+
+.message.github-alert {
+  margin: 0.75rem 0;
+}
+
+.message.is-warning.github-alert .message-body pre {
+  background-color: #fef3c7;
+  border-color: #fde68a;
+}
+.dark .message.is-warning.github-alert .message-body pre {
+  background-color: color-mix(in oklch, #eab308 18%, var(--card));
+  border-color: color-mix(in oklch, #eab308 35%, var(--border));
 }
