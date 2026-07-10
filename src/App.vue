@@ -44,17 +44,17 @@
                         class="navbar-item"
                         ><i class="fa-fw fas fa-book mr-2"></i> Documentation
                       </a>
-                      <a
-                        class="navbar-item theme-toggle"
-                        @click="toggleTheme"
-                      >
-                        <i class="fa-fw fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
-                        {{ isDark ? 'Light' : 'Dark' }}
-                      </a>
                     </div>
                   </div>
                 </div>
               </nav>
+              <button
+                class="button theme-toggle"
+                @click="toggleTheme"
+                :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+              >
+                <i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -271,10 +271,12 @@ export default {
 <style>
 .navbar.is-rounded {
   border-radius: 8px;
-  overflow: hidden;
 }
 .theme-toggle {
+  border-radius: 8px;
+  margin-left: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
   cursor: pointer;
-  font-weight: 600;
 }
 </style>
