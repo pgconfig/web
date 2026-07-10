@@ -8,6 +8,10 @@
     color: #c9d1d9;
     background: #0d1117;
   }
+  pre {
+    background: #0d1117 !important;
+    border-color: #30363d !important;
+  }
   .hljs-doctag,
   .hljs-keyword,
   .hljs-meta .hljs-keyword,
@@ -83,6 +87,10 @@
 [data-theme="dark"] .hljs {
   color: #c9d1d9;
   background: #0d1117;
+}
+[data-theme="dark"] pre {
+  background: #0d1117 !important;
+  border-color: #30363d !important;
 }
 [data-theme="dark"] .hljs-doctag,
 [data-theme="dark"] .hljs-keyword,

@@ -18,3 +18,13 @@
   /* Restore Bulma 0.9 box radius */
   --bulma-box-radius: 0.25rem;
 }
+
+/* Dark mode: add border under hero to separate from page body */
+@media (prefers-color-scheme: dark) {
+  .hero.is-dark.is-bold {
+    border-bottom: 1px solid var(--bulma-border-weak);
+  }
+}
+[data-theme="dark"] .hero.is-dark.is-bold {
+  border-bottom: 1px solid var(--bulma-border-weak);
+}

@@ -177,8 +177,14 @@ export default {
 
 <style scoped>
 .hljs {
-  padding: 0em;
-  background: none;
+  padding: 1em;
+}
+pre {
+  background: var(--bulma-scheme-main-ter);
+  border: 1px solid var(--bulma-border-weak);
+  border-radius: 6px;
+  padding: 0;
+  overflow-x: auto;
 }
 .code-container {
   position: relative;
