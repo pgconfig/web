@@ -28,6 +28,70 @@ configureMarked(marked)
 
 const ALL_ENVS = ["web", "oltp", "dw", "mixed", "desktop"]
 
+// Fixed column widths so every category table aligns vertically.
+const COLUMN_WIDTHS = {
+  expand: "3%",
+  name: "26%",
+  default_value: "13%",
+  env: "11.6%",
+}
+
+function buildColumns() {
+  return [
+    {
+      id: "expand",
+      header: () => "",
+      size: 40,
+      cell: ({ row }) =>
+        h(
+          Button,
+          {
+            variant: "ghost",
+            size: "icon",
+            class: "size-8",
+            onClick: () => row.toggleExpanded(),
+          },
+          () =>
+            h(row.getIsExpanded() ? ChevronDown : ChevronRight, {
+              class: "size-4",
+            })
+        ),
+    },
+    {
+      accessorKey: "name",
+      header: () => "",
+      cell: ({ row }) =>
+        h(
+          "span",
+          { class: "font-mono font-semibold break-all" },
+          row.original.name
+        ),
+    },
+    {
+      id: "default_value",
+      accessorFn: (row) => row.documentation?.default_value ?? "",
+      header: () => "Default Value",
+      meta: { columnType: "default" },
+      cell: (info) => h("span", String(info.getValue() ?? "")),
+    },
+    ...ALL_ENVS.map((env) => ({
+      accessorKey: env,
+      header: () => env.toUpperCase(),
+      meta: { env },
+      cell: (info) => h("span", String(info.getValue() ?? "")),
+    })),
+  ]
+}
+
+function renderColgroup() {
+  return h("colgroup", null, [
+    h("col", { style: { width: COLUMN_WIDTHS.expand } }),
+    h("col", { style: { width: COLUMN_WIDTHS.name } }),
+    h("col", { style: { width: COLUMN_WIDTHS.default_value } }),
+    ...ALL_ENVS.map(() => h("col", { style: { width: COLUMN_WIDTHS.env } })),
+  ])
+}
+
 const props = defineProps({
   fullResponse: {
     type: Array,
@@ -189,51 +253,7 @@ const ComparisonCategoryTable = defineComponent({
   },
   setup(categoryProps) {
     const expanded = ref({})
-
-    const columns = [
-      {
-        id: "expand",
-        header: () => "",
-        size: 40,
-        cell: ({ row }) =>
-          h(
-            Button,
-            {
-              variant: "ghost",
-              size: "icon",
-              class: "size-8",
-              onClick: () => row.toggleExpanded(),
-            },
-            () =>
-              h(row.getIsExpanded() ? ChevronDown : ChevronRight, {
-                class: "size-4",
-              })
-          ),
-      },
-      {
-        accessorKey: "name",
-        header: () => "",
-        cell: ({ row }) =>
-          h(
-            "span",
-            { class: "font-mono font-semibold" },
-            row.original.name
-          ),
-      },
-      {
-        id: "default_value",
-        accessorFn: (row) => row.documentation?.default_value ?? "",
-        header: () => "Default Value",
-        meta: { columnType: "default" },
-        cell: (info) => h("span", String(info.getValue() ?? "")),
-      },
-      ...ALL_ENVS.map((env) => ({
-        accessorKey: env,
-        header: () => env.toUpperCase(),
-        meta: { env },
-        cell: (info) => h("span", String(info.getValue() ?? "")),
-      })),
-    ]
+    const columns = buildColumns()
 
     const table = useVueTable({
       get data() {
@@ -256,8 +276,9 @@ const ComparisonCategoryTable = defineComponent({
 
       return h("div", { class: "mb-8" }, [
         h("h3", { class: "mb-3 text-lg font-semibold" }, categoryProps.title),
-        h(Table, null, {
+        h(Table, { class: "table-fixed" }, {
           default: () => [
+            renderColgroup(),
             h(TableHeader, null, {
               default: () =>
                 table.getHeaderGroups().map((headerGroup) =>
@@ -348,7 +369,7 @@ const ComparisonCategoryTable = defineComponent({
 </script>
 
 <template>
-  <div v-if="formattedConfigs.length > 0">
+  <div v-if="formattedConfigs.length > 0" class="comparison-tables">
     <ComparisonCategoryTable
       v-for="item in formattedConfigs"
       :key="item.name"
@@ -367,5 +388,21 @@ const ComparisonCategoryTable = defineComponent({
 .abstract-text {
   margin-top: 10px;
   margin-bottom: 1rem;
+}
+
+.comparison-tables :deep([data-slot="table"]) {
+  table-layout: fixed;
+}
+
+.comparison-tables :deep(th),
+.comparison-tables :deep(td) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comparison-tables :deep(th:first-child),
+.comparison-tables :deep(td:first-child) {
+  width: 2.5rem;
 }
 </style>
