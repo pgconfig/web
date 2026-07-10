@@ -10,6 +10,7 @@
   --bulma-primary-h: 256deg;
   --bulma-primary-s: 60%;
   --bulma-primary-l: 59%;
+  --bulma-primary-invert-l: 100%;
 
   /* Restore Bulma 0.9 system font stack instead of Inter */
   --bulma-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
