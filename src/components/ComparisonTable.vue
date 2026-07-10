@@ -145,7 +145,7 @@ export default {
 <style>
 .is-selected-column {
   background: var(--bulma-primary) !important;
-  color: var(--bulma-white) !important;
+  color: var(--bulma-primary-invert) !important;
 }
 .is-default-column {
   background: var(--bulma-scheme-main-bis) !important;

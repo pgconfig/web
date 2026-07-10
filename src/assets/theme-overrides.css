@@ -1,17 +1,11 @@
 /*
- * Theme overrides to restore the original Bulma 0.9 visual style.
- * Bulma v1 changed several design tokens (font, radius, spacing) that
- * alter the look. These overrides restore the original appearance while
- * keeping Bulma v1 and Buefy v3 functionality.
+ * Theme overrides for Bulma v1 design tokens.
+ * Keep Bulma v1 native colors (teal primary) which work correctly
+ * with the full 21-shade palette, invert, soft/bold, and dark mode.
+ * Only override font and radius to match the original appearance.
  */
 
 :root {
-  /* Restore purple primary (#7957d5) instead of Bulma v1 teal */
-  --bulma-primary-h: 256deg;
-  --bulma-primary-s: 60%;
-  --bulma-primary-l: 59%;
-  --bulma-primary-invert-l: 100%;
-
   /* Restore Bulma 0.9 system font stack instead of Inter */
   --bulma-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --bulma-family-secondary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
