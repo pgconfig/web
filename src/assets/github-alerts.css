@@ -31,8 +31,8 @@
 
 /* Code blocks inside alerts */
 .message.github-alert .message-body pre {
-  background-color: #f6f8fa;
-  border: 1px solid #d0d7de;
+  background-color: var(--bulma-scheme-main-ter);
+  border: 1px solid var(--bulma-border-weak);
   border-radius: 6px;
   padding: 12px;
   margin: 8px 0;
@@ -40,7 +40,7 @@
 }
 
 .message.github-alert .message-body code {
-  background-color: rgba(175, 184, 193, 0.2);
+  background-color: var(--bulma-code-background);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 85%;
@@ -56,12 +56,6 @@
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
-.message.github-alert .message-body pre {
-  background-color: rgba(175, 184, 193, 0.2);
-  border: 1px solid rgba(175, 184, 193, 0.3);
-  color: inherit;
-}
-
 /* Tables inside alerts */
 .message.github-alert .message-body table {
   margin: 8px 0;
@@ -71,23 +65,23 @@
 
 .message.github-alert .message-body table th,
 .message.github-alert .message-body table td {
-  border: 1px solid rgba(175, 184, 193, 0.3);
+  border: 1px solid var(--bulma-border-weak);
   padding: 6px 13px;
   text-align: left;
 }
 
 .message.github-alert .message-body table th {
-  background-color: rgba(175, 184, 193, 0.2);
+  background-color: var(--bulma-scheme-main-ter);
   font-weight: 600;
 }
 
 .message.github-alert .message-body table tbody tr:nth-child(even) {
-  background-color: rgba(175, 184, 193, 0.1);
+  background-color: var(--bulma-scheme-main-bis);
 }
 
 /* NOTE - Blue */
 .message.is-info.github-alert {
-  background-color: #ffffff;
+  background-color: var(--bulma-scheme-main);
   border-left-color: #0969da;
 }
 
@@ -97,7 +91,7 @@
 
 /* TIP - Green */
 .message.is-success.github-alert {
-  background-color: #ffffff;
+  background-color: var(--bulma-scheme-main);
   border-left-color: #1a7f37;
 }
 
@@ -107,7 +101,7 @@
 
 /* IMPORTANT - Purple */
 .message.is-link.github-alert {
-  background-color: #ffffff;
+  background-color: var(--bulma-scheme-main);
   border-left-color: #8250df;
 }
 
@@ -117,7 +111,7 @@
 
 /* WARNING - Orange/Yellow */
 .message.is-warning.github-alert {
-  background-color: #ffffff;
+  background-color: var(--bulma-scheme-main);
   border-left-color: #9a6700;
 }
 
@@ -127,7 +121,7 @@
 
 /* CAUTION - Red */
 .message.is-danger.github-alert {
-  background-color: #ffffff;
+  background-color: var(--bulma-scheme-main);
   border-left-color: #d1242f;
 }
 
@@ -135,37 +129,75 @@
   color: #d1242f;
 }
 
-/* Dark mode support */
+/* Dark mode: adjust GitHub alert border/header colors for contrast */
 @media (prefers-color-scheme: dark) {
-  .message.github-alert {
-    background-color: #0d1117;
+  .message.is-info.github-alert {
+    border-left-color: #4493f8;
+  }
+  .message.is-info.github-alert .message-header {
+    color: #4493f8;
   }
 
-  .message.github-alert .message-body {
-    color: inherit;
+  .message.is-success.github-alert {
+    border-left-color: #3fb950;
+  }
+  .message.is-success.github-alert .message-header {
+    color: #3fb950;
   }
 
-  .message.github-alert .message-body pre {
-    background-color: rgba(110, 118, 129, 0.2);
-    border-color: rgba(110, 118, 129, 0.3);
-    color: inherit;
+  .message.is-link.github-alert {
+    border-left-color: #a371f7;
+  }
+  .message.is-link.github-alert .message-header {
+    color: #a371f7;
   }
 
-  .message.github-alert .message-body code {
-    background-color: rgba(110, 118, 129, 0.2);
-    color: inherit;
+  .message.is-warning.github-alert {
+    border-left-color: #d29922;
+  }
+  .message.is-warning.github-alert .message-header {
+    color: #d29922;
   }
 
-  .message.github-alert .message-body table th,
-  .message.github-alert .message-body table td {
-    border-color: rgba(110, 118, 129, 0.3);
+  .message.is-danger.github-alert {
+    border-left-color: #f85149;
   }
+  .message.is-danger.github-alert .message-header {
+    color: #f85149;
+  }
+}
 
-  .message.github-alert .message-body table th {
-    background-color: rgba(110, 118, 129, 0.2);
-  }
+[data-theme="dark"] .message.is-info.github-alert {
+  border-left-color: #4493f8;
+}
+[data-theme="dark"] .message.is-info.github-alert .message-header {
+  color: #4493f8;
+}
 
-  .message.github-alert .message-body table tbody tr:nth-child(even) {
-    background-color: rgba(110, 118, 129, 0.1);
-  }
+[data-theme="dark"] .message.is-success.github-alert {
+  border-left-color: #3fb950;
+}
+[data-theme="dark"] .message.is-success.github-alert .message-header {
+  color: #3fb950;
+}
+
+[data-theme="dark"] .message.is-link.github-alert {
+  border-left-color: #a371f7;
+}
+[data-theme="dark"] .message.is-link.github-alert .message-header {
+  color: #a371f7;
+}
+
+[data-theme="dark"] .message.is-warning.github-alert {
+  border-left-color: #d29922;
+}
+[data-theme="dark"] .message.is-warning.github-alert .message-header {
+  color: #d29922;
+}
+
+[data-theme="dark"] .message.is-danger.github-alert {
+  border-left-color: #f85149;
+}
+[data-theme="dark"] .message.is-danger.github-alert .message-header {
+  color: #f85149;
 }

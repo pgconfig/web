@@ -3,6 +3,7 @@ import Buefy from "buefy";
 import "buefy/dist/css/buefy.css";
 import { createRouter, createWebHistory } from "vue-router";
 import "highlight.js/styles/github.css";
+import "./assets/hljs-dark.css";
 import http from "./http";
 import App from "./App.vue";
 

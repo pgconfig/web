@@ -144,11 +144,11 @@ export default {
 
 <style>
 .is-selected-column {
-  background: #7957d5 !important;
-  color: white !important;
+  background: var(--bulma-primary) !important;
+  color: var(--bulma-white) !important;
 }
 .is-default-column {
-  background: #f8f8f8 !important;
+  background: var(--bulma-scheme-main-bis) !important;
 }
 .abstract-text {
   margin-top: 10px;

@@ -24,7 +24,7 @@
               <nav
                 role="navigation"
                 aria-label="main navigation"
-                class="navbar"
+                class="navbar is-rounded"
               >
                 <div class="container">
                   <div class="navbar-menu is-active">
@@ -43,6 +43,13 @@
                         target="_blank"
                         class="navbar-item"
                         ><i class="fa-fw fas fa-book mr-2"></i> Documentation
+                      </a>
+                      <a
+                        class="navbar-item theme-toggle"
+                        @click="toggleTheme"
+                      >
+                        <i class="fa-fw fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
+                        {{ isDark ? 'Light' : 'Dark' }}
                       </a>
                     </div>
                   </div>
@@ -104,6 +111,7 @@ export default {
       exportedResponse: {
         output: {},
       },
+      isDark: false,
     };
   },
   components: {
@@ -160,7 +168,25 @@ export default {
       return args.join("&");
     },
   },
+  mounted() {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark") {
+      this.isDark = true;
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else if (saved === "light") {
+      this.isDark = false;
+      document.documentElement.setAttribute("data-theme", "light");
+    } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      this.isDark = true;
+    }
+  },
   methods: {
+    toggleTheme() {
+      this.isDark = !this.isDark;
+      const theme = this.isDark ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    },
     tableIsLoading(val) {
       this.isLoading = val;
     },
@@ -243,4 +269,12 @@ export default {
 </script>
 
 <style>
+.navbar.is-rounded {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.theme-toggle {
+  cursor: pointer;
+  font-weight: 600;
+}
 </style>
