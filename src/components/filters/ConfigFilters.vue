@@ -3,6 +3,8 @@ import { computed, reactive, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import lodash from "lodash"
 import { Server, Database } from "lucide-vue-next"
+import { inject } from "vue"
+import { parseFormQuery } from "@/utils/formQuery"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -17,7 +19,9 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar"
 
-const emit = defineEmits(["changingForm"])
+const emit = defineEmits(["changing-form"])
+
+const setForm = inject("setForm", null)
 
 const route = useRoute()
 const router = useRouter()
@@ -76,42 +80,21 @@ const pgVersionOptions = [
   { value: "9.1", label: "9.1 (EOL)" },
 ]
 
-function parserBy(key) {
-  const parsers = {
-    max_connections: parseInt,
-    pg_version: parseFloat,
-    total_ram: parseInt,
-    cpus: parseInt,
-  }
-  const defaultParser = (value) => value
-  return parsers[key] || defaultParser
+const valuesFromURL = computed(() => parseFormQuery(route.query))
+
+function syncFormFromRoute() {
+  const fromUrl = valuesFromURL.value
+  form.max_connections = fromUrl.max_connections
+  form.pg_version = fromUrl.pg_version
+  form.environment_name = fromUrl.environment_name
+  form.total_ram = fromUrl.total_ram
+  form.cpus = fromUrl.cpus
+  form.drive_type = fromUrl.drive_type
+  form.arch = fromUrl.arch
+  form.os_type = fromUrl.os_type
 }
 
-function parseQuery(query) {
-  const parsedValues = Object.entries(query).reduce(
-    (acc, [key, value]) => ({ ...acc, [key]: parserBy(key)(value) }),
-    {}
-  )
-  return parsedValues
-}
-
-const valuesFromURL = computed(() => parseQuery(route.query))
-
-watch(
-  () => route.fullPath,
-  () => {
-    if (valuesFromURL.value) {
-      form.max_connections = valuesFromURL.value.max_connections
-      form.pg_version = valuesFromURL.value.pg_version
-      form.environment_name = valuesFromURL.value.environment_name
-      form.total_ram = valuesFromURL.value.total_ram
-      form.cpus = valuesFromURL.value.cpus
-      form.drive_type = valuesFromURL.value.drive_type
-      form.arch = valuesFromURL.value.arch
-      form.os_type = valuesFromURL.value.os_type
-    }
-  }
-)
+watch(() => route.fullPath, syncFormFromRoute, { immediate: true })
 
 watch(
   form,
@@ -127,7 +110,9 @@ watch(
           console.log(failure)
         })
     }
-    emit("changingForm", newForm)
+    const payload = { ...form }
+    emit("changing-form", payload)
+    setForm?.(payload)
   },
   { deep: true, immediate: true }
 )

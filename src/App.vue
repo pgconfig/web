@@ -1,15 +1,17 @@
 <script setup>
-import { getCurrentInstance } from "vue"
+import { provide } from "vue"
 import { RouterView } from "vue-router"
 import { Toaster } from "@/components/ui/sonner"
 import AppShell from "@/layouts/AppShell.vue"
-import ComparePage from "@/pages/ComparePage.vue"
-import ExportPage from "@/pages/ExportPage.vue"
 import { useTheme } from "@/composables/useTheme"
 import { useTuningConfig } from "@/composables/useTuningConfig"
+import http from "@/http"
 
-const http = getCurrentInstance().appContext.config.globalProperties.$http
 const { isDark, toggleTheme } = useTheme()
+const tuning = useTuningConfig(http)
+
+provide("setForm", tuning.setForm)
+
 const {
   isLoading,
   fullResponse,
@@ -18,7 +20,7 @@ const {
   currentEnv,
   setForm,
   setExportForm,
-} = useTuningConfig(http)
+} = tuning
 </script>
 
 <template>
@@ -28,14 +30,16 @@ const {
     @toggle-theme="toggleTheme"
     @form-change="setForm"
   >
-    <RouterView v-slot="{ route }">
-      <ExportPage
+    <RouterView v-slot="{ Component, route }">
+      <component
+        :is="Component"
         v-if="route.name === 'export'"
         :exported-response="exportedResponse"
         :pg-version="pgVersion"
         @changing-form="setExportForm"
       />
-      <ComparePage
+      <component
+        :is="Component"
         v-else
         :full-response="fullResponse"
         :pg-version="pgVersion"

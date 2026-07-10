@@ -44,7 +44,7 @@ const props = defineProps({
 })
 
 const formattedConfigs = computed(() => {
-  if (!props.fullResponse) return []
+  if (!Array.isArray(props.fullResponse) || props.fullResponse.length === 0) return []
   return formatConfigs(props.fullResponse)
 })
 
@@ -277,10 +277,10 @@ const ComparisonCategoryTable = defineComponent({
                             default: () =>
                               header.isPlaceholder
                                 ? null
-                                : FlexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                  ),
+                                : h(FlexRender, {
+                                    render: header.column.columnDef.header,
+                                    props: header.getContext(),
+                                  }),
                           }
                         )
                       ),
@@ -304,10 +304,10 @@ const ComparisonCategoryTable = defineComponent({
                           },
                           {
                             default: () =>
-                              FlexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              ),
+                              h(FlexRender, {
+                                render: cell.column.columnDef.cell,
+                                props: cell.getContext(),
+                              }),
                           }
                         )
                       ),
@@ -358,6 +358,9 @@ const ComparisonCategoryTable = defineComponent({
       :current-env="currentEnv"
     />
   </div>
+  <p v-else class="text-sm text-muted-foreground py-8 text-center">
+    Loading configuration comparison…
+  </p>
 </template>
 
 <style scoped>

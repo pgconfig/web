@@ -13,15 +13,8 @@ const app = createApp(App);
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    {
-      path: "/",
-      component: App,
-      children: [
-        { path: "", component: ComparePage, name: "compare" },
-        { path: "tuning", redirect: { name: "compare" } },
-        { path: "export", component: ExportPage, name: "export" },
-      ],
-    },
+    { path: "/", name: "compare", component: ComparePage, alias: ["/tuning"] },
+    { path: "/export", name: "export", component: ExportPage },
   ],
 });
 

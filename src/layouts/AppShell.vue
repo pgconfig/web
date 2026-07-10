@@ -32,10 +32,14 @@ const router = useRouter()
 function goHome() {
   router.push({ path: "/", query: router.currentRoute.value.query })
 }
+function onFormChange(formValue) {
+  emit("form-change", formValue)
+}
+
 </script>
 
 <template>
-  <SidebarProvider default-open>
+  <SidebarProvider :default-open="true">
     <Sidebar collapsible="icon">
       <SidebarHeader class="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center">
         <span class="font-bold text-lg group-data-[collapsible=icon]:hidden">PGConfig</span>
@@ -43,7 +47,7 @@ function goHome() {
       </SidebarHeader>
 
       <SidebarContent class="group-data-[collapsible=icon]:hidden overflow-y-auto">
-        <ConfigFilters @changing-form="emit('form-change', $event)" />
+        <ConfigFilters @changing-form="onFormChange" />
       </SidebarContent>
 
       <SidebarFooter>

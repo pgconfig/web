@@ -31,7 +31,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(["changingForm"])
+const emit = defineEmits(["changing-form"])
 
 const codeBlock = ref(null)
 
@@ -113,7 +113,7 @@ watch(
 watch(
   exportForm,
   (newForm) => {
-    emit("changingForm", { ...newForm })
+    emit("changing-form", { ...newForm })
     nextTick(() => highlightCode())
   },
   { immediate: true, deep: true }
