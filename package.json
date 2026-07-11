@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@lucide/vue": "^1.23.0",
+    "@phosphor-icons/vue": "^2.2.1",
+    "@remixicon/vue": "^4.9.0",
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^14.3.0",
     "axios": "^1.7.2",

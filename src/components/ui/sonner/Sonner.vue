@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import {
-  CircleCheckIcon,
-  InfoIcon,
-  TriangleAlertIcon,
-  OctagonXIcon,
-  Loader2Icon,
-  XIcon,
-} from '@lucide/vue';
+  RiCheckboxCircleLine,
+  RiInformationLine,
+  RiAlertLine,
+  RiCloseCircleLine,
+  RiLoader4Line,
+  RiCloseLine,
+} from '@remixicon/vue';
 
 
 import type { ToasterProps } from "vue-sonner"
@@ -32,30 +32,30 @@ const props = defineProps<ToasterProps>()
     }"
     :toast-options="{
       classes: {
-        toast: 'rounded-2xl',
+        toast: 'rounded-none',
       },
     }"
     v-bind="props"
   >
     <template #success-icon>
-      <CircleCheckIcon class="size-4" />
+      <RiCheckboxCircleLine class="size-4" />
     </template>
     <template #info-icon>
-      <InfoIcon class="size-4" />
+      <RiInformationLine class="size-4" />
     </template>
     <template #warning-icon>
-      <TriangleAlertIcon class="size-4" />
+      <RiAlertLine class="size-4" />
     </template>
     <template #error-icon>
-      <OctagonXIcon class="size-4" />
+      <RiCloseCircleLine class="size-4" />
     </template>
     <template #loading-icon>
       <div>
-        <Loader2Icon class="size-4 animate-spin" />
+        <RiLoader4Line class="size-4 animate-spin" />
       </div>
     </template>
     <template #close-icon>
-      <XIcon class="size-4" />
+      <RiCloseLine class="size-4" />
     </template>
   </Sonner>
 </template>
