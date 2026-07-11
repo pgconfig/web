@@ -183,28 +183,16 @@ const ComparisonCategoryTable = defineComponent({
     return () => {
       const rows = table.getRowModel().rows
 
-      return h("div", { class: "mb-6" }, [
+      return h("section", { class: "space-y-4" }, [
         h(
-          "div",
+          "h2",
           {
             class:
-              "overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
+              "border-b pb-4 text-sm font-medium leading-none",
           },
-          [
-            h(
-              "div",
-              { class: "flex flex-col gap-1 border-b px-6 py-4" },
-              [
-                h(
-                  "h3",
-                  {
-                    class: "text-base font-semibold leading-none",
-                  },
-                  categoryProps.title
-                ),
-              ]
-            ),
-            h(Table, { class: "table-fixed border-0" }, {
+          categoryProps.title
+        ),
+        h(Table, { class: "table-fixed border-0" }, {
               default: () => [
                 renderColgroup(),
                 h(TableHeader, null, {
@@ -296,15 +284,14 @@ const ComparisonCategoryTable = defineComponent({
             }),
           ],
         }),
-      ]),
-    ])
+      ])
     }
   },
 })
 </script>
 
 <template>
-  <div v-if="formattedConfigs.length > 0" class="comparison-tables min-w-0 max-w-full space-y-4">
+  <div v-if="formattedConfigs.length > 0" class="comparison-tables min-w-0 max-w-full space-y-8">
     <ComparisonCategoryTable
       v-for="item in formattedConfigs"
       :key="item.name"
