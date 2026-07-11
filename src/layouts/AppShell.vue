@@ -24,35 +24,27 @@ function onFormChange(formValue) {
 </script>
 
 <template>
-  <SidebarProvider :default-open="true" class="h-svh overflow-hidden bg-muted">
+  <SidebarProvider :default-open="false" class="h-svh overflow-hidden">
     <AppSidebar
       :is-dark="isDark"
       @toggle-theme="emit('toggle-theme')"
       @form-change="onFormChange"
     />
 
-    <SidebarInset
-      class="bg-background flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden md:my-2 md:mr-2 md:ml-0 md:max-h-[calc(100svh-1rem)] md:rounded-xl md:shadow-sm md:peer-data-[state=collapsed]:ml-2"
-    >
-      <header
-        class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
-      >
-        <div class="flex min-w-0 flex-1 items-center gap-2 px-4">
-          <div class="flex items-center gap-2">
-            <SidebarTrigger class="-ml-1" />
-            <Separator
-              orientation="vertical"
-              class="h-4 self-center"
-            />
-          </div>
-          <div
-            id="page-header"
-            class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
-          />
-        </div>
+    <SidebarInset class="min-h-0 min-w-0 overflow-hidden">
+      <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <SidebarTrigger class="-ml-1" />
+        <Separator
+          orientation="vertical"
+          class="mr-2 data-[orientation=vertical]:h-4"
+        />
+        <div
+          id="page-header"
+          class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
+        />
       </header>
 
-      <div class="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-auto p-4 pt-0">
+      <div class="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-auto p-4">
         <slot />
       </div>
     </SidebarInset>

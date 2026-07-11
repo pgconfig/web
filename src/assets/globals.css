@@ -143,7 +143,3 @@
 .comparison-col-selected-header {
   @apply bg-primary/15 text-primary font-medium;
 }
-
-[data-slot="sidebar-wrapper"] {
-  @apply bg-muted;
-}
