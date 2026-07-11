@@ -297,7 +297,7 @@ const ComparisonCategoryTable = defineComponent({
 </script>
 
 <template>
-  <div v-if="formattedConfigs.length > 0" class="comparison-tables space-y-2">
+  <div v-if="formattedConfigs.length > 0" class="comparison-tables min-w-0 max-w-full space-y-2">
     <ComparisonCategoryTable
       v-for="item in formattedConfigs"
       :key="item.name"

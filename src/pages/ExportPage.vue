@@ -26,7 +26,7 @@ function goCompare() {
 
 <template>
   <Teleport to="#page-header">
-    <Breadcrumb class="min-w-0">
+    <Breadcrumb class="min-w-0 flex-1 overflow-hidden">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink as-child>
@@ -39,7 +39,7 @@ function goCompare() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-    <Button variant="outline" @click="goCompare">Compare</Button>
+    <Button variant="outline" class="shrink-0" @click="goCompare">Compare</Button>
   </Teleport>
 
   <ExportPanel

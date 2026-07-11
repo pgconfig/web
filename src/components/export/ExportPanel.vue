@@ -155,11 +155,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex min-h-0 w-full max-w-full flex-col gap-4">
-    <div
-      class="grid gap-4 border-b pb-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
-    >
-      <div class="grid gap-2">
+  <div class="flex min-h-0 min-w-0 w-full max-w-full flex-col gap-4">
+    <div class="grid min-w-0 gap-4 border-b pb-4 sm:grid-cols-2">
+      <div class="grid min-w-0 gap-2">
         <label
           for="export-format"
           class="text-xs font-medium text-muted-foreground"
@@ -182,7 +180,7 @@ onMounted(() => {
         </Select>
       </div>
 
-      <div class="grid gap-2">
+      <div class="grid min-w-0 gap-2">
         <label
           for="export-log-format"
           class="text-xs font-medium text-muted-foreground"
@@ -207,20 +205,21 @@ onMounted(() => {
 
       <label
         for="include-pgbadger"
-        class="flex h-8 items-center gap-2 self-end sm:justify-end lg:min-w-[16rem]"
+        class="flex h-8 min-w-0 items-center gap-2 sm:col-span-2"
       >
         <Switch
           id="include-pgbadger"
           v-model:checked="exportForm.include_pgbadger"
+          class="shrink-0"
         />
-        <span class="text-sm text-foreground leading-none">
+        <span class="text-sm leading-snug text-foreground">
           Include PGBadger log configuration
         </span>
       </label>
     </div>
 
     <section
-      class="flex min-h-0 flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-sm"
+      class="flex min-h-0 min-w-0 w-full max-w-full flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-sm"
     >
       <div
         class="flex items-center justify-between gap-3 border-b px-3 py-2"
@@ -257,13 +256,12 @@ onMounted(() => {
 @reference "../../assets/globals.css";
 
 pre.export-code {
-  @apply m-0 max-h-[min(60vh,28rem)] min-h-[10rem] overflow-auto bg-muted;
+  @apply m-0 min-h-[10rem] max-h-[min(60vh,28rem)] w-full max-w-full min-w-0 overflow-auto bg-muted;
 }
 
 pre.export-code :deep(code.hljs) {
-  @apply block bg-transparent p-4 text-xs leading-relaxed text-foreground;
+  @apply block w-max min-w-full bg-transparent p-4 text-xs leading-relaxed text-foreground;
   white-space: pre;
-  word-break: normal;
   tab-size: 2;
 }
 </style>

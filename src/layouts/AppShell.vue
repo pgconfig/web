@@ -103,15 +103,15 @@ function onFormChange(formValue) {
 
     <SidebarInset>
       <header
-        class="flex h-14 shrink-0 items-center gap-2 border-b px-4"
+        class="flex h-14 shrink-0 items-center gap-2 overflow-hidden border-b px-4"
       >
-        <SidebarTrigger class="-ml-1" />
+        <SidebarTrigger class="-ml-1 shrink-0" />
         <div
           id="page-header"
-          class="flex min-w-0 flex-1 items-center justify-between gap-4"
+          class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
         />
       </header>
-      <div class="flex min-h-0 flex-1 flex-col overflow-auto p-6">
+      <div class="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto p-6">
         <slot />
       </div>
     </SidebarInset>

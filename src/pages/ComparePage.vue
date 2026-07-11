@@ -25,7 +25,7 @@ function goExport() {
 
 <template>
   <Teleport to="#page-header">
-    <Breadcrumb class="min-w-0">
+    <Breadcrumb class="min-w-0 flex-1 overflow-hidden">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbPage>Configuration</BreadcrumbPage>
@@ -36,7 +36,7 @@ function goExport() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-    <Button @click="goExport">Export</Button>
+    <Button class="shrink-0" @click="goExport">Export</Button>
   </Teleport>
 
   <ComparisonTable
