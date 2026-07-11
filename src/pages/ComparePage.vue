@@ -8,6 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
+import ProfileSelect from "@/components/filters/ProfileSelect.vue"
 import ComparisonTable from "@/components/comparison/ComparisonTable.vue"
 
 defineProps({
@@ -36,7 +37,10 @@ function goExport() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-    <Button class="shrink-0" @click="goExport">Export</Button>
+    <div class="flex shrink-0 items-center gap-3">
+      <ProfileSelect />
+      <Button @click="goExport">Export</Button>
+    </div>
   </Teleport>
 
   <ComparisonTable

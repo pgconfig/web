@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src/ --ext .js,.vue",
-    "test": "jest"
+    "test": "jest",
+    "theme:update": "bash scripts/update-theme.sh"
   },
   "dependencies": {
     "@lucide/vue": "^1.23.0",

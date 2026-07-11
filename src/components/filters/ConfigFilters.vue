@@ -18,7 +18,6 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
 } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
 
 const emit = defineEmits(["changing-form"])
 
@@ -53,14 +52,6 @@ const driveTypeOptions = [
   { value: "HDD", label: "HDD Storage" },
   { value: "SSD", label: "SSD Storage" },
   { value: "SAN", label: "Network Storage - NAS/SAN" },
-]
-
-const environmentOptions = [
-  { value: "WEB", label: "General web applications" },
-  { value: "OLTP", label: "ERP or long transaction applications" },
-  { value: "DW", label: "DataWare house and BI Applications" },
-  { value: "Mixed", label: "DB and APP on the same server" },
-  { value: "Desktop", label: "Developer local machine" },
 ]
 
 const pgVersionOptions = [
@@ -233,34 +224,12 @@ function updatePgVersion(value) {
       </SidebarGroupContent>
     </SidebarGroup>
 
-    <Separator class="my-2" />
-
     <SidebarGroup>
       <SidebarGroupLabel class="flex items-center gap-2">
         <RiDatabase2Line class="size-4" />
         Database
       </SidebarGroupLabel>
       <SidebarGroupContent class="space-y-3">
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Application profile
-          </label>
-          <Select v-model="form.environment_name">
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select profile" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in environmentOptions"
-                :key="opt.value"
-                :value="opt.value"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
         <div class="space-y-1.5">
           <label class="text-xs font-medium text-sidebar-foreground/70">
             PostgreSQL Version

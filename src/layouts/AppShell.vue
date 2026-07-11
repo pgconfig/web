@@ -13,7 +13,14 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { RiBookOpenLine, RiGithubFill, RiHomeLine, RiMoonLine, RiSunLine } from "@remixicon/vue"
+import {
+  RiBookOpenLine,
+  RiDatabase2Line,
+  RiGithubFill,
+  RiHomeLine,
+  RiMoonLine,
+  RiSunLine,
+} from "@remixicon/vue"
 import ConfigFilters from "@/components/filters/ConfigFilters.vue"
 
 defineProps<{
@@ -35,25 +42,30 @@ function goHome() {
 function onFormChange(formValue) {
   emit("form-change", formValue)
 }
-
 </script>
 
 <template>
   <SidebarProvider :default-open="true">
     <Sidebar collapsible="icon">
-      <SidebarHeader
-        class="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:py-4"
-      >
-        <span class="font-bold text-lg group-data-[collapsible=icon]:hidden">PGConfig</span>
-        <span
-          class="hidden font-semibold text-sm tracking-wide text-sidebar-foreground group-data-[collapsible=icon]:flex [writing-mode:vertical-rl] [text-orientation:mixed]"
-          aria-label="PGConfig"
-        >
-          PGConfig
-        </span>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" @click="goHome">
+              <div
+                class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+              >
+                <RiDatabase2Line class="size-4" />
+              </div>
+              <div class="grid flex-1 text-left text-sm leading-tight">
+                <span class="truncate font-semibold">PGConfig</span>
+                <span class="truncate text-xs">PostgreSQL tuning</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent class="group-data-[collapsible=icon]:hidden overflow-y-auto">
+      <SidebarContent class="group-data-[collapsible=icon]:hidden">
         <ConfigFilters @changing-form="onFormChange" />
       </SidebarContent>
 
@@ -62,7 +74,7 @@ function onFormChange(formValue) {
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Home" @click="goHome">
               <RiHomeLine />
-              <span class="group-data-[collapsible=icon]:hidden">Home</span>
+              <span>Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -73,7 +85,7 @@ function onFormChange(formValue) {
                 rel="noreferrer"
               >
                 <RiGithubFill />
-                <span class="group-data-[collapsible=icon]:hidden">Contribute</span>
+                <span>Contribute</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -85,7 +97,7 @@ function onFormChange(formValue) {
                 rel="noreferrer"
               >
                 <RiBookOpenLine />
-                <span class="group-data-[collapsible=icon]:hidden">Documentation</span>
+                <span>Documentation</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -93,25 +105,29 @@ function onFormChange(formValue) {
             <SidebarMenuButton tooltip="Toggle theme" @click="emit('toggle-theme')">
               <RiSunLine v-if="isDark" />
               <RiMoonLine v-else />
-              <span class="group-data-[collapsible=icon]:hidden">Theme</span>
+              <span>Theme</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
 
     <SidebarInset>
       <header
-        class="flex h-14 shrink-0 items-center gap-2 overflow-hidden border-b px-4"
+        class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
       >
-        <SidebarTrigger class="-ml-1 shrink-0" />
-        <div
-          id="page-header"
-          class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
-        />
+        <div class="flex min-w-0 flex-1 items-center gap-2 px-4">
+          <SidebarTrigger class="-ml-1" />
+          <div
+            id="page-header"
+            class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
+          />
+        </div>
       </header>
-      <div class="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto p-6">
+
+      <div class="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-auto p-4 pt-0">
         <slot />
       </div>
     </SidebarInset>
@@ -122,7 +138,9 @@ function onFormChange(formValue) {
       aria-live="polite"
       aria-busy="true"
     >
-      <div class="size-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <div
+        class="size-8 animate-spin rounded-full border-4 border-primary border-t-transparent"
+      />
     </div>
   </SidebarProvider>
 </template>

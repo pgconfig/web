@@ -1,16 +1,16 @@
 {
   "$schema": "https://shadcn-vue.com/schema.json",
   "style": "reka-maia",
-  "font": "figtree",
+  "font": "noto-sans",
   "typescript": true,
   "tailwind": {
     "config": "tailwind.config.js",
     "css": "src/assets/globals.css",
-    "baseColor": "neutral",
+    "baseColor": "stone",
     "cssVariables": true,
     "prefix": ""
   },
-  "iconLibrary": "lucide",
+  "iconLibrary": "remixicon",
   "rtl": false,
   "pointer": false,
   "aliases": {

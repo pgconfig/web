@@ -60,7 +60,7 @@ function buildColumns() {
       cell: ({ row }) =>
         h(
           "span",
-          { class: "font-mono font-semibold break-all" },
+          { class: "font-medium break-all" },
           row.original.name
         ),
     },
@@ -123,7 +123,7 @@ function headerClass(column, currentEnv) {
   const meta = column.columnDef.meta
   if (meta?.columnType === "default") return "comparison-col-default"
   if (meta?.env && isSelected(meta.env, currentEnv)) {
-    return "comparison-col-selected"
+    return "comparison-col-selected-header"
   }
   return ""
 }
@@ -131,12 +131,12 @@ function headerClass(column, currentEnv) {
 function cellClass(column, currentEnv) {
   const meta = column.columnDef.meta
   if (meta?.columnType === "default") {
-    return cn("comparison-col-default", "font-mono")
+    return "comparison-col-default tabular-nums"
   }
   if (meta?.env && isSelected(meta.env, currentEnv)) {
-    return cn("comparison-col-selected", "font-mono")
+    return cn("comparison-col-selected", "tabular-nums")
   }
-  if (meta?.env) return "font-mono"
+  if (meta?.env) return "tabular-nums"
   return ""
 }
 
@@ -183,19 +183,27 @@ const ComparisonCategoryTable = defineComponent({
     return () => {
       const rows = table.getRowModel().rows
 
-      return h("div", { class: "mb-8 space-y-3" }, [
-        h(
-          "h3",
-          {
-            class:
-              "text-sm font-semibold tracking-wide text-foreground uppercase",
-          },
-          categoryProps.title
-        ),
+      return h("div", { class: "mb-6" }, [
         h(
           "div",
-          { class: "overflow-hidden rounded-none border bg-card" },
+          {
+            class:
+              "overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm",
+          },
           [
+            h(
+              "div",
+              { class: "flex flex-col gap-1 border-b px-6 py-4" },
+              [
+                h(
+                  "h3",
+                  {
+                    class: "text-base font-semibold leading-none",
+                  },
+                  categoryProps.title
+                ),
+              ]
+            ),
             h(Table, { class: "table-fixed border-0" }, {
               default: () => [
                 renderColgroup(),
@@ -286,18 +294,17 @@ const ComparisonCategoryTable = defineComponent({
                   return [mainRow, detailRow]
                 }),
             }),
-              ],
-            }),
           ],
-        ),
-      ])
+        }),
+      ]),
+    ])
     }
   },
 })
 </script>
 
 <template>
-  <div v-if="formattedConfigs.length > 0" class="comparison-tables min-w-0 max-w-full space-y-2">
+  <div v-if="formattedConfigs.length > 0" class="comparison-tables min-w-0 max-w-full space-y-4">
     <ComparisonCategoryTable
       v-for="item in formattedConfigs"
       :key="item.name"
