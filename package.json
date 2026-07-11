@@ -10,8 +10,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@hugeicons/core-free-icons": "^4.2.2",
-    "@hugeicons/vue": "^1.0.7",
     "@lucide/vue": "^1.23.0",
     "@remixicon/vue": "^4.9.0",
     "@tanstack/vue-table": "^8.21.3",
