@@ -1,5 +1,5 @@
 <script setup>
-import { Lightbulb, FileText } from "lucide-vue-next"
+import { RiFileCopyLine, RiFileTextLine, RiLightbulbLine } from "@remixicon/vue"
 import { marked } from "marked"
 import { configureMarked } from "@/utils/markdownAlerts"
 import { Button } from "@/components/ui/button"
@@ -69,7 +69,7 @@ function renderMarkdown(text) {
               target="_blank"
               rel="noreferrer"
             >
-              <Lightbulb />
+              <RiLightbulbLine />
               <span>
                 Learn more on Postgresql<strong>co.nf</strong>
               </span>
@@ -81,7 +81,7 @@ function renderMarkdown(text) {
               target="_blank"
               rel="noreferrer"
             >
-              <FileText />
+              <RiFileTextLine />
               <span>Check the docs</span>
             </a>
           </Button>

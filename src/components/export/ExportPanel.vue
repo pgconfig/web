@@ -5,7 +5,7 @@ import hljs from "highlight.js/lib/core"
 import yaml from "highlight.js/lib/languages/yaml"
 import sql from "highlight.js/lib/languages/sql"
 import ini from "highlight.js/lib/languages/ini"
-import { Copy } from "lucide-vue-next"
+import { RiFileCopyLine } from "@remixicon/vue"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -133,67 +133,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="space-y-4">
-    <div class="grid gap-4 md:grid-cols-3 md:items-end">
-      <div class="space-y-2">
-        <label class="text-sm font-medium">Export Format</label>
-        <Select v-model="exportForm.format">
-          <SelectTrigger class="w-full">
-            <SelectValue placeholder="Select format" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem
-              v-for="opt in formatOptions"
-              :key="opt.value"
-              :value="opt.value"
-            >
-              {{ opt.label }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+  <div class="space-y-6">
+    <section class="rounded-none border bg-card p-4 text-card-foreground shadow-sm">
+      <div class="grid gap-4 md:grid-cols-3 md:items-end">
+        <div class="space-y-2">
+          <label class="text-xs font-medium text-muted-foreground">
+            Export Format
+          </label>
+          <Select v-model="exportForm.format">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="Select format" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="opt in formatOptions"
+                :key="opt.value"
+                :value="opt.value"
+              >
+                {{ opt.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div class="space-y-2">
-        <label class="text-sm font-medium">Log Format</label>
-        <Select v-model="exportForm.log_format" :disabled="showLogFormat">
-          <SelectTrigger class="w-full">
-            <SelectValue placeholder="Select log format" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem
-              v-for="opt in logFormatOptions"
-              :key="opt.value"
-              :value="opt.value"
-            >
-              {{ opt.label }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <div class="space-y-2">
+          <label class="text-xs font-medium text-muted-foreground">
+            Log Format
+          </label>
+          <Select v-model="exportForm.log_format" :disabled="showLogFormat">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="Select log format" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="opt in logFormatOptions"
+                :key="opt.value"
+                :value="opt.value"
+              >
+                {{ opt.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div class="flex items-center gap-2 pb-2">
-        <Switch
-          id="include-pgbadger"
-          v-model:checked="exportForm.include_pgbadger"
-        />
-        <label for="include-pgbadger" class="text-sm">
-          Include PGBadger log configuration
-        </label>
+        <div class="flex items-center gap-2 pb-2">
+          <Switch
+            id="include-pgbadger"
+            v-model:checked="exportForm.include_pgbadger"
+          />
+          <label for="include-pgbadger" class="text-sm text-foreground">
+            Include PGBadger log configuration
+          </label>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="relative">
+    <section class="relative overflow-hidden rounded-none border bg-card shadow-sm">
       <Button
         variant="outline"
         size="sm"
         class="absolute top-2 right-2 z-10"
         @click="copyToClipboard"
       >
-        <Copy class="size-4" />
+        <RiFileCopyLine />
         Copy
       </Button>
       <pre class="export-code"><code ref="codeBlock" :class="['hljs', highlightLang]"></code></pre>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -201,7 +207,7 @@ onMounted(() => {
 @reference "../../assets/globals.css";
 
 pre.export-code {
-  @apply bg-muted border rounded-md overflow-x-auto;
+  @apply bg-muted overflow-x-auto rounded-none border-0;
 }
 
 pre.export-code :deep(.hljs) {

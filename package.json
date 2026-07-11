@@ -10,8 +10,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lucide/vue": "^1.23.0",
-    "@phosphor-icons/vue": "^2.2.1",
     "@remixicon/vue": "^4.9.0",
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^14.3.0",
@@ -20,7 +18,6 @@
     "clsx": "^2.1.1",
     "highlight.js": "^11.11.1",
     "lodash": "^4.17.20",
-    "lucide-vue-next": "^1.0.0",
     "marked": "^17.0.1",
     "reka-ui": "^2.10.1",
     "shadcn-vue": "^2.7.4",

@@ -13,7 +13,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { BookOpen, Github, Home, Moon, Sun } from "lucide-vue-next"
+import { RiBookOpenLine, RiGithubFill, RiHomeLine, RiMoonLine, RiSunLine } from "@remixicon/vue"
 import ConfigFilters from "@/components/filters/ConfigFilters.vue"
 
 defineProps<{
@@ -61,7 +61,7 @@ function onFormChange(formValue) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Home" @click="goHome">
-              <Home />
+              <RiHomeLine />
               <span class="group-data-[collapsible=icon]:hidden">Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -72,7 +72,7 @@ function onFormChange(formValue) {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Github />
+                <RiGithubFill />
                 <span class="group-data-[collapsible=icon]:hidden">Contribute</span>
               </a>
             </SidebarMenuButton>
@@ -84,15 +84,15 @@ function onFormChange(formValue) {
                 target="_blank"
                 rel="noreferrer"
               >
-                <BookOpen />
+                <RiBookOpenLine />
                 <span class="group-data-[collapsible=icon]:hidden">Documentation</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Toggle theme" @click="emit('toggle-theme')">
-              <Sun v-if="isDark" />
-              <Moon v-else />
+              <RiSunLine v-if="isDark" />
+              <RiMoonLine v-else />
               <span class="group-data-[collapsible=icon]:hidden">Theme</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -102,11 +102,16 @@ function onFormChange(formValue) {
     </Sidebar>
 
     <SidebarInset>
-      <header class="flex h-14 items-center gap-2 border-b px-4">
-        <SidebarTrigger />
-        <slot name="header" />
+      <header
+        class="flex h-14 shrink-0 items-center gap-2 border-b px-4"
+      >
+        <SidebarTrigger class="-ml-1" />
+        <div
+          id="page-header"
+          class="flex min-w-0 flex-1 items-center justify-between gap-4"
+        />
       </header>
-      <div class="flex-1 overflow-auto p-4">
+      <div class="flex min-h-0 flex-1 flex-col overflow-auto p-6">
         <slot />
       </div>
     </SidebarInset>

@@ -2,7 +2,7 @@
 import { computed, reactive, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import lodash from "lodash"
-import { Server, Database } from "lucide-vue-next"
+import { RiDatabase2Line, RiServerLine } from "@remixicon/vue"
 import { inject } from "vue"
 import { parseFormQuery } from "@/utils/formQuery"
 import { Input } from "@/components/ui/input"
@@ -131,7 +131,7 @@ function updatePgVersion(value) {
   <div class="flex flex-col gap-1">
     <SidebarGroup>
       <SidebarGroupLabel class="flex items-center gap-2">
-        <Server class="size-4" />
+        <RiServerLine class="size-4" />
         Server
       </SidebarGroupLabel>
       <SidebarGroupContent class="space-y-3 px-2">
@@ -237,7 +237,7 @@ function updatePgVersion(value) {
 
     <SidebarGroup>
       <SidebarGroupLabel class="flex items-center gap-2">
-        <Database class="size-4" />
+        <RiDatabase2Line class="size-4" />
         Database
       </SidebarGroupLabel>
       <SidebarGroupContent class="space-y-3 px-2">

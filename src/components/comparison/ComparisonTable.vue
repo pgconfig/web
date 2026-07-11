@@ -6,13 +6,14 @@ import {
   getExpandedRowModel,
   useVueTable,
 } from "@tanstack/vue-table"
-import { ChevronDown, ChevronRight } from "lucide-vue-next"
+import { RiArrowDownSLine, RiArrowRightSLine } from "@remixicon/vue"
 import { toast } from "vue-sonner"
 import { formatConfigs } from "@/services/formatters"
 import { valueUpdater } from "@/components/ui/table/utils"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import ComparisonRowDetail from "@/components/comparison/ComparisonRowDetail.vue"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
   TableBody,
@@ -48,7 +49,7 @@ function buildColumns() {
             onClick: () => row.toggleExpanded(),
           },
           () =>
-            h(row.getIsExpanded() ? ChevronDown : ChevronRight, {
+            h(row.getIsExpanded() ? RiArrowDownSLine : RiArrowRightSLine, {
               class: "size-4",
             })
         ),
@@ -230,7 +231,10 @@ const ComparisonCategoryTable = defineComponent({
             h(TableBody, null, {
               default: () =>
                 rows.flatMap((row) => {
-                  const mainRow = h(TableRow, { key: row.id }, {
+                  const mainRow = h(TableRow, {
+                    key: row.id,
+                    class: "hover:bg-muted/50 data-[state=selected]:bg-muted",
+                  }, {
                     default: () =>
                       row.getVisibleCells().map((cell) =>
                         h(
@@ -293,7 +297,7 @@ const ComparisonCategoryTable = defineComponent({
 </script>
 
 <template>
-  <div v-if="formattedConfigs.length > 0" class="comparison-tables">
+  <div v-if="formattedConfigs.length > 0" class="comparison-tables space-y-2">
     <ComparisonCategoryTable
       v-for="item in formattedConfigs"
       :key="item.name"
@@ -303,9 +307,11 @@ const ComparisonCategoryTable = defineComponent({
       :current-env="currentEnv"
     />
   </div>
-  <p v-else class="text-sm text-muted-foreground py-8 text-center">
-    Loading configuration comparison…
-  </p>
+  <div v-else class="space-y-3 py-8">
+    <Skeleton class="h-8 w-48" />
+    <Skeleton class="h-40 w-full" />
+    <Skeleton class="h-40 w-full" />
+  </div>
 </template>
 
 <style scoped>
