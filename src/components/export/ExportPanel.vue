@@ -76,17 +76,35 @@ const highlightLang = computed(() => {
   }
 })
 
+function formatExportOutput(output) {
+  if (output == null || output === "") return ""
+  if (typeof output === "string") return output
+  return JSON.stringify(output, null, 2)
+}
+
+const exportText = computed(() =>
+  formatExportOutput(props.exportedResponse.output)
+)
+
 function highlightCode() {
-  if (codeBlock.value && props.exportedResponse.output) {
-    const output = String(props.exportedResponse.output)
-    const result = hljs.highlight(output, { language: highlightLang.value })
-    codeBlock.value.innerHTML = result.value
+  if (!codeBlock.value) return
+  const output = exportText.value
+  if (!output) {
+    codeBlock.value.textContent = ""
+    return
   }
+  const result = hljs.highlight(output, { language: highlightLang.value })
+  codeBlock.value.innerHTML = result.value
 }
 
 async function copyToClipboard() {
+  const output = exportText.value
+  if (!output) {
+    toast.error("Nothing to copy")
+    return
+  }
   try {
-    await navigator.clipboard.writeText(String(props.exportedResponse.output))
+    await navigator.clipboard.writeText(output)
     toast.success("Copied to clipboard")
   } catch (e) {
     toast.error("Failed to copy", { description: String(e) })
@@ -127,78 +145,110 @@ watch(
   { deep: true }
 )
 
+watch(exportText, () => {
+  nextTick(() => highlightCode())
+})
+
 onMounted(() => {
   highlightCode()
 })
 </script>
 
 <template>
-  <div class="space-y-6">
-    <section class="rounded-none border bg-card p-4 text-card-foreground shadow-sm">
-      <div class="grid gap-4 md:grid-cols-3 md:items-end">
-        <div class="space-y-2">
-          <label class="text-xs font-medium text-muted-foreground">
-            Export Format
-          </label>
-          <Select v-model="exportForm.format">
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select format" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in formatOptions"
-                :key="opt.value"
-                :value="opt.value"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div class="space-y-2">
-          <label class="text-xs font-medium text-muted-foreground">
-            Log Format
-          </label>
-          <Select v-model="exportForm.log_format" :disabled="showLogFormat">
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select log format" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in logFormatOptions"
-                :key="opt.value"
-                :value="opt.value"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div class="flex items-center gap-2 pb-2">
-          <Switch
-            id="include-pgbadger"
-            v-model:checked="exportForm.include_pgbadger"
-          />
-          <label for="include-pgbadger" class="text-sm text-foreground">
-            Include PGBadger log configuration
-          </label>
-        </div>
+  <div class="flex min-h-0 w-full max-w-full flex-col gap-4">
+    <div
+      class="grid gap-4 border-b pb-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
+    >
+      <div class="grid gap-2">
+        <label
+          for="export-format"
+          class="text-xs font-medium text-muted-foreground"
+        >
+          Export Format
+        </label>
+        <Select v-model="exportForm.format">
+          <SelectTrigger id="export-format" class="w-full">
+            <SelectValue placeholder="Select format" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem
+              v-for="opt in formatOptions"
+              :key="opt.value"
+              :value="opt.value"
+            >
+              {{ opt.label }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-    </section>
 
-    <section class="relative overflow-hidden rounded-none border bg-card shadow-sm">
-      <Button
-        variant="outline"
-        size="sm"
-        class="absolute top-2 right-2 z-10"
-        @click="copyToClipboard"
+      <div class="grid gap-2">
+        <label
+          for="export-log-format"
+          class="text-xs font-medium text-muted-foreground"
+        >
+          Log Format
+        </label>
+        <Select v-model="exportForm.log_format" :disabled="showLogFormat">
+          <SelectTrigger id="export-log-format" class="w-full">
+            <SelectValue placeholder="Select log format" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem
+              v-for="opt in logFormatOptions"
+              :key="opt.value"
+              :value="opt.value"
+            >
+              {{ opt.label }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <label
+        for="include-pgbadger"
+        class="flex h-8 items-center gap-2 self-end sm:justify-end lg:min-w-[16rem]"
       >
-        <RiFileCopyLine />
-        Copy
-      </Button>
-      <pre class="export-code"><code ref="codeBlock" :class="['hljs', highlightLang]"></code></pre>
+        <Switch
+          id="include-pgbadger"
+          v-model:checked="exportForm.include_pgbadger"
+        />
+        <span class="text-sm text-foreground leading-none">
+          Include PGBadger log configuration
+        </span>
+      </label>
+    </div>
+
+    <section
+      class="flex min-h-0 flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-sm"
+    >
+      <div
+        class="flex items-center justify-between gap-3 border-b px-3 py-2"
+      >
+        <span class="text-xs font-medium text-muted-foreground">
+          Generated configuration
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!exportText"
+          @click="copyToClipboard"
+        >
+          <RiFileCopyLine />
+          Copy
+        </Button>
+      </div>
+
+      <pre
+        v-if="exportText"
+        class="export-code"
+      ><code ref="codeBlock" :class="['hljs', highlightLang]"></code></pre>
+      <p
+        v-else
+        class="px-4 py-8 text-center text-sm text-muted-foreground"
+      >
+        Configuration output will appear here.
+      </p>
     </section>
   </div>
 </template>
@@ -207,11 +257,13 @@ onMounted(() => {
 @reference "../../assets/globals.css";
 
 pre.export-code {
-  @apply bg-muted overflow-x-auto rounded-none border-0;
+  @apply m-0 max-h-[min(60vh,28rem)] min-h-[10rem] overflow-auto bg-muted;
 }
 
-pre.export-code :deep(.hljs) {
-  @apply bg-transparent text-foreground;
-  padding: 1em;
+pre.export-code :deep(code.hljs) {
+  @apply block bg-transparent p-4 text-xs leading-relaxed text-foreground;
+  white-space: pre;
+  word-break: normal;
+  tab-size: 2;
 }
 </style>

@@ -134,7 +134,7 @@ function updatePgVersion(value) {
         <RiServerLine class="size-4" />
         Server
       </SidebarGroupLabel>
-      <SidebarGroupContent class="space-y-3 px-2">
+      <SidebarGroupContent class="space-y-3">
         <div class="space-y-1.5">
           <label class="text-xs font-medium text-sidebar-foreground/70">
             Operating system
@@ -240,7 +240,7 @@ function updatePgVersion(value) {
         <RiDatabase2Line class="size-4" />
         Database
       </SidebarGroupLabel>
-      <SidebarGroupContent class="space-y-3 px-2">
+      <SidebarGroupContent class="space-y-3">
         <div class="space-y-1.5">
           <label class="text-xs font-medium text-sidebar-foreground/70">
             Application profile
