@@ -29,8 +29,7 @@ const ALL_ENVS = ["web", "oltp", "dw", "mixed", "desktop"]
 
 // Fixed column widths so every category table aligns vertically.
 const COLUMN_WIDTHS = {
-  expand: "3%",
-  name: "26%",
+  name: "29%",
   default_value: "13%",
   env: "11.6%",
 }
@@ -38,33 +37,29 @@ const COLUMN_WIDTHS = {
 function buildColumns() {
   return [
     {
-      id: "expand",
-      header: () => "",
-      size: 40,
-      cell: ({ row }) =>
-        h(
-          Button,
-          {
-            variant: "ghost",
-            size: "icon",
-            class: "size-8",
-            onClick: () => row.toggleExpanded(),
-          },
-          () =>
-            h(row.getIsExpanded() ? RiArrowDownSLine : RiArrowRightSLine, {
-              class: "size-4",
-            })
-        ),
-    },
-    {
       accessorKey: "name",
-      header: () => "",
+      header: () => "Parameter",
       cell: ({ row }) =>
-        h(
-          "span",
-          { class: "font-medium break-all" },
-          row.original.name
-        ),
+        h("div", { class: "flex min-w-0 items-center gap-2" }, [
+          h(
+            Button,
+            {
+              variant: "ghost",
+              size: "icon",
+              class: "size-8 shrink-0",
+              onClick: () => row.toggleExpanded(),
+            },
+            () =>
+              h(row.getIsExpanded() ? RiArrowDownSLine : RiArrowRightSLine, {
+                class: "size-4",
+              })
+          ),
+          h(
+            "span",
+            { class: "min-w-0 truncate font-medium" },
+            row.original.name
+          ),
+        ]),
     },
     {
       id: "default_value",
@@ -84,7 +79,6 @@ function buildColumns() {
 
 function renderColgroup() {
   return h("colgroup", null, [
-    h("col", { style: { width: COLUMN_WIDTHS.expand } }),
     h("col", { style: { width: COLUMN_WIDTHS.name } }),
     h("col", { style: { width: COLUMN_WIDTHS.default_value } }),
     ...ALL_ENVS.map(() => h("col", { style: { width: COLUMN_WIDTHS.env } })),
@@ -354,7 +348,9 @@ const ComparisonCategoryTable = defineComponent({
 
 .comparison-tables :deep(th:first-child),
 .comparison-tables :deep(td:first-child) {
-  width: 2.5rem;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .comparison-tables :deep(td.comparison-detail-cell) {
