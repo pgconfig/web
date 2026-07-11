@@ -1,5 +1,6 @@
 <script setup>
 import { computed, defineComponent, h, onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import {
   FlexRender,
   getCoreRowModel,
@@ -9,6 +10,7 @@ import {
 import { RiArrowDownSLine, RiArrowRightSLine } from "@remixicon/vue"
 import { toast } from "vue-sonner"
 import { formatConfigs } from "@/services/formatters"
+import { ENV_COLUMN_TO_PROFILE } from "@/constants/environmentOptions"
 import { valueUpdater } from "@/components/ui/table/utils"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -104,6 +106,28 @@ const props = defineProps({
   },
 })
 
+const route = useRoute()
+const router = useRouter()
+
+function selectProfile(env) {
+  const environment_name = ENV_COLUMN_TO_PROFILE[env]
+  if (!environment_name) return
+  router.push({
+    query: {
+      ...route.query,
+      environment_name,
+    },
+  })
+}
+
+function envColumnProps(column) {
+  const meta = column.columnDef.meta
+  if (!meta?.env) return {}
+  return {
+    onClick: () => selectProfile(meta.env),
+  }
+}
+
 const formattedConfigs = computed(() => {
   if (!Array.isArray(props.fullResponse) || props.fullResponse.length === 0) return []
   return formatConfigs(props.fullResponse)
@@ -123,8 +147,9 @@ function headerClass(column, currentEnv) {
   const meta = column.columnDef.meta
   if (meta?.columnType === "default") return "comparison-col-default"
   if (meta?.env && isSelected(meta.env, currentEnv)) {
-    return "comparison-col-selected-header"
+    return cn("comparison-col-selected-header", "cursor-pointer")
   }
+  if (meta?.env) return "cursor-pointer"
   return ""
 }
 
@@ -134,9 +159,9 @@ function cellClass(column, currentEnv) {
     return "comparison-col-default tabular-nums"
   }
   if (meta?.env && isSelected(meta.env, currentEnv)) {
-    return cn("comparison-col-selected", "tabular-nums")
+    return cn("comparison-col-selected", "tabular-nums", "cursor-pointer")
   }
-  if (meta?.env) return "tabular-nums"
+  if (meta?.env) return cn("tabular-nums", "cursor-pointer")
   return ""
 }
 
@@ -209,6 +234,7 @@ const ComparisonCategoryTable = defineComponent({
                               header.column,
                               categoryProps.currentEnv
                             ),
+                            ...envColumnProps(header.column),
                           },
                           {
                             default: () =>
@@ -241,6 +267,7 @@ const ComparisonCategoryTable = defineComponent({
                               cell.column,
                               categoryProps.currentEnv
                             ),
+                            ...envColumnProps(cell.column),
                           },
                           {
                             default: () =>
