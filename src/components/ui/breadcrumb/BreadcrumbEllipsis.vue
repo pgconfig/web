@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { RiMoreLine } from '@remixicon/vue';
+import { MoreHorizontalIcon } from '@lucide/vue';
 
 import type { HTMLAttributes } from "vue"
 import { cn } from "@/lib/utils"
@@ -17,7 +17,7 @@ const props = defineProps<{
     :class="cn('size-5 [&>svg]:size-4 flex items-center justify-center', props.class)"
   >
     <slot>
-      <RiMoreLine />
+      <MoreHorizontalIcon />
     </slot>
     <span class="sr-only">More</span>
   </span>

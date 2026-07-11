@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RiSideBarLine } from '@remixicon/vue';
+import { PanelLeftIcon } from '@lucide/vue';
 
 import type { HTMLAttributes } from "vue"
 import { cn } from "@/lib/utils"
@@ -22,7 +22,7 @@ const { toggleSidebar } = useSidebar()
     :class="cn('', props.class)"
     @click="toggleSidebar"
   >
-    <RiSideBarLine class="cn-rtl-flip" />
+    <PanelLeftIcon class="cn-rtl-flip" />
     <span class="sr-only">Toggle Sidebar</span>
   </Button>
 </template>
