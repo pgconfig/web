@@ -24,24 +24,26 @@ function goExport() {
 </script>
 
 <template>
-  <div class="flex w-full items-center justify-between mb-4">
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbPage>Configuration</BreadcrumbPage>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Profile Comparison</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-    <Button @click="goExport">Export</Button>
-  </div>
+  <div class="space-y-6">
+    <div class="flex items-center justify-between gap-4 border-b pb-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbPage>Configuration</BreadcrumbPage>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Profile Comparison</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <Button @click="goExport">Export</Button>
+    </div>
 
-  <ComparisonTable
-    :full-response="fullResponse"
-    :pg-version="pgVersion"
-    :current-env="currentEnv"
-  />
+    <ComparisonTable
+      :full-response="fullResponse"
+      :pg-version="pgVersion"
+      :current-env="currentEnv"
+    />
+  </div>
 </template>

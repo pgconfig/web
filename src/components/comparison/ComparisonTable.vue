@@ -182,12 +182,23 @@ const ComparisonCategoryTable = defineComponent({
     return () => {
       const rows = table.getRowModel().rows
 
-      return h("div", { class: "mb-8" }, [
-        h("h3", { class: "mb-3 text-lg font-semibold" }, categoryProps.title),
-        h(Table, { class: "table-fixed" }, {
-          default: () => [
-            renderColgroup(),
-            h(TableHeader, null, {
+      return h("div", { class: "mb-8 space-y-3" }, [
+        h(
+          "h3",
+          {
+            class:
+              "text-sm font-semibold tracking-wide text-foreground uppercase",
+          },
+          categoryProps.title
+        ),
+        h(
+          "div",
+          { class: "overflow-hidden rounded-none border bg-card" },
+          [
+            h(Table, { class: "table-fixed border-0" }, {
+              default: () => [
+                renderColgroup(),
+                h(TableHeader, null, {
               default: () =>
                 table.getHeaderGroups().map((headerGroup) =>
                   h(TableRow, { key: headerGroup.id }, {
@@ -255,7 +266,7 @@ const ComparisonCategoryTable = defineComponent({
                           TableCell,
                           {
                             colspan: row.getVisibleCells().length,
-                            class: "comparison-detail-cell p-4",
+                            class: "bg-muted/40 p-4",
                           },
                           {
                             default: () =>
@@ -271,8 +282,10 @@ const ComparisonCategoryTable = defineComponent({
                   return [mainRow, detailRow]
                 }),
             }),
+              ],
+            }),
           ],
-        }),
+        ),
       ])
     }
   },
@@ -321,25 +334,6 @@ const ComparisonCategoryTable = defineComponent({
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
-}
-
-.comparison-detail-btn-primary {
-  background-color: #00d1b2;
-  color: #fff;
-}
-
-.comparison-detail-btn-primary:hover {
-  background-color: #00c4a7;
-}
-
-.comparison-detail-btn-secondary {
-  background-color: var(--card);
-  color: var(--foreground);
-  border-color: var(--border);
-}
-
-.comparison-detail-btn-secondary:hover {
-  background-color: var(--muted);
 }
 
 .comparison-detail-docs :deep(p) {

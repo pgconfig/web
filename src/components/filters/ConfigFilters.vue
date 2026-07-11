@@ -18,6 +18,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
 } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator"
 
 const emit = defineEmits(["changing-form"])
 
@@ -231,6 +232,8 @@ function updatePgVersion(value) {
         </div>
       </SidebarGroupContent>
     </SidebarGroup>
+
+    <Separator class="my-2" />
 
     <SidebarGroup>
       <SidebarGroupLabel class="flex items-center gap-2">

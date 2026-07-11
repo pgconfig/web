@@ -1,45 +1,16 @@
 /**
  * marked extension for GitHub-style alerts
  * Supports: NOTE, TIP, IMPORTANT, WARNING, CAUTION
- *
- * Syntax:
- * > [!NOTE]
- * > This is a note
- *
- * Renders as styled callout boxes with icons
  */
 
 const alertTypes = {
-  NOTE: {
-    variantClass: 'is-info',
-    icon: 'fa-info-circle',
-    title: 'Note'
-  },
-  TIP: {
-    variantClass: 'is-success',
-    icon: 'fa-lightbulb',
-    title: 'Tip'
-  },
-  IMPORTANT: {
-    variantClass: 'is-link',
-    icon: 'fa-bullhorn',
-    title: 'Important'
-  },
-  WARNING: {
-    variantClass: 'is-warning',
-    icon: 'fa-exclamation-triangle',
-    title: 'Warning'
-  },
-  CAUTION: {
-    variantClass: 'is-danger',
-    icon: 'fa-ban',
-    title: 'Caution'
-  }
+  NOTE: { slug: 'note', title: 'Note' },
+  TIP: { slug: 'tip', title: 'Tip' },
+  IMPORTANT: { slug: 'important', title: 'Important' },
+  WARNING: { slug: 'warning', title: 'Warning' },
+  CAUTION: { slug: 'caution', title: 'Caution' },
 };
 
-/**
- * Extension for marked to parse GitHub-style alerts
- */
 export const githubAlertsExtension = {
   name: 'githubAlerts',
   level: 'block',
@@ -54,7 +25,7 @@ export const githubAlertsExtension = {
       const alertType = match[1].toUpperCase();
       const content = match[2]
         .split('\n')
-        .map(line => line.replace(/^\s*>\s?/, ''))
+        .map((line) => line.replace(/^\s*>\s?/, ''))
         .join('\n')
         .trim();
 
@@ -63,10 +34,9 @@ export const githubAlertsExtension = {
         raw: match[0],
         alertType,
         content,
-        tokens: []
+        tokens: [],
       };
 
-      // Tokenize as block-level content (supports tables, code blocks, etc.)
       this.lexer.blockTokens(content, token.tokens);
 
       return token;
@@ -76,20 +46,15 @@ export const githubAlertsExtension = {
     const alert = alertTypes[token.alertType];
     if (!alert) return '';
 
-    return `<article class="message ${alert.variantClass} github-alert">
-  <div class="message-header">
-    <p><i class="fas ${alert.icon}"></i> ${alert.title}</p>
-  </div>
-  <div class="message-body">
+    return `<aside class="md-alert md-alert-${alert.slug}" role="note">
+  <p class="md-alert-title">${alert.title}</p>
+  <div class="md-alert-body">
     ${this.parser.parse(token.tokens)}
   </div>
-</article>`;
-  }
+</aside>`;
+  },
 };
 
-/**
- * Configure marked with GitHub alerts extension
- */
 export function configureMarked(marked) {
   marked.use({ extensions: [githubAlertsExtension] });
   return marked;

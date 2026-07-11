@@ -25,26 +25,28 @@ function goCompare() {
 </script>
 
 <template>
-  <div class="flex w-full items-center justify-between mb-4">
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink as-child>
-            <button type="button" @click="goCompare">Configuration</button>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Export Config</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-    <Button variant="outline" @click="goCompare">Compare</Button>
-  </div>
+  <div class="space-y-6">
+    <div class="flex items-center justify-between gap-4 border-b pb-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink as-child>
+              <button type="button" @click="goCompare">Configuration</button>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Export Config</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <Button variant="outline" @click="goCompare">Compare</Button>
+    </div>
 
-  <ExportPanel
-    :exported-response="exportedResponse"
-    :pg-version="pgVersion"
-    @changing-form="emit('changing-form', $event)"
-  />
+    <ExportPanel
+      :exported-response="exportedResponse"
+      :pg-version="pgVersion"
+      @changing-form="emit('changing-form', $event)"
+    />
+  </div>
 </template>

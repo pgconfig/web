@@ -15,7 +15,7 @@ describe('GitHub Alerts Extension', () => {
 > This is a note`;
 
     const html = marked(markdown);
-    expect(html).toContain('message is-info github-alert');
+    expect(html).toContain('md-alert md-alert-note');
     expect(html).toContain('Note');
     expect(html).toContain('This is a note');
   });
@@ -25,7 +25,7 @@ describe('GitHub Alerts Extension', () => {
 > This is a warning`;
 
     const html = marked(markdown);
-    expect(html).toContain('message is-warning github-alert');
+    expect(html).toContain('md-alert md-alert-warning');
     expect(html).toContain('Warning');
     expect(html).toContain('This is a warning');
   });
@@ -35,7 +35,7 @@ describe('GitHub Alerts Extension', () => {
 > Helpful advice here`;
 
     const html = marked(markdown);
-    expect(html).toContain('message is-success github-alert');
+    expect(html).toContain('md-alert md-alert-tip');
     expect(html).toContain('Tip');
     expect(html).toContain('Helpful advice here');
   });
@@ -45,7 +45,7 @@ describe('GitHub Alerts Extension', () => {
 > Key information`;
 
     const html = marked(markdown);
-    expect(html).toContain('message is-link github-alert');
+    expect(html).toContain('md-alert md-alert-important');
     expect(html).toContain('Important');
     expect(html).toContain('Key information');
   });
@@ -55,7 +55,7 @@ describe('GitHub Alerts Extension', () => {
 > Be careful with this`;
 
     const html = marked(markdown);
-    expect(html).toContain('message is-danger github-alert');
+    expect(html).toContain('md-alert md-alert-caution');
     expect(html).toContain('Caution');
     expect(html).toContain('Be careful with this');
   });
@@ -86,7 +86,6 @@ describe('GitHub Alerts Extension', () => {
 > This should not render as alert`;
 
     const html = marked(markdown);
-    // Should fall back to regular blockquote
     expect(html).toContain('blockquote');
   });
 
@@ -95,7 +94,7 @@ describe('GitHub Alerts Extension', () => {
 > Lowercase note`;
 
     const html = marked(markdown);
-    expect(html).toContain('message is-info github-alert');
+    expect(html).toContain('md-alert md-alert-note');
   });
 
   test('handles multiple consecutive alerts without mixing content', () => {
@@ -114,21 +113,17 @@ describe('GitHub Alerts Extension', () => {
 
     const html = marked(markdown);
 
-    // Should have 3 separate article elements
-    const articleCount = (html.match(/<article class="message/g) || []).length;
-    expect(articleCount).toBe(3);
+    const alertCount = (html.match(/<aside class="md-alert/g) || []).length;
+    expect(alertCount).toBe(3);
 
-    // Each alert type should appear once
-    expect(html).toContain('message is-warning github-alert');
-    expect(html).toContain('message is-info github-alert');
-    expect(html).toContain('message is-success github-alert');
+    expect(html).toContain('md-alert-warning');
+    expect(html).toContain('md-alert-note');
+    expect(html).toContain('md-alert-tip');
 
-    // Content should not leak between alerts
     expect(html).toContain('This is a warning alert');
     expect(html).toContain('This is a note alert');
     expect(html).toContain('This is a tip alert');
 
-    // The literal tags should NOT appear in output
     expect(html).not.toContain('[!NOTE]');
     expect(html).not.toContain('[!TIP]');
   });
@@ -142,7 +137,7 @@ describe('GitHub Alerts Extension', () => {
 
     const html = marked(markdown);
 
-    expect(html).toContain('message is-success github-alert');
+    expect(html).toContain('md-alert-tip');
     expect(html).toContain('<code>');
     expect(html).toContain('max = work_mem');
   });
@@ -158,7 +153,7 @@ describe('GitHub Alerts Extension', () => {
 
     const html = marked(markdown);
 
-    expect(html).toContain('message is-success github-alert');
+    expect(html).toContain('md-alert-tip');
     expect(html).toContain('<table>');
     expect(html).toContain('<th>');
     expect(html).toContain('Scenario');
@@ -174,7 +169,7 @@ describe('GitHub Alerts Extension', () => {
 
     const html = marked(markdown);
 
-    expect(html).toContain('message is-success github-alert');
+    expect(html).toContain('md-alert-tip');
     expect(html).toContain('<a href="https://pgbouncer.org/">PgBouncer</a>');
     expect(html).toContain('<a href="https://github.com/postgresml/pgcat">PgCat</a>');
     expect(html).toContain('Lightweight');
@@ -199,7 +194,7 @@ describe('GitHub Alerts Extension', () => {
 
     const html = marked(markdown);
 
-    expect(html).toContain('message is-warning github-alert');
+    expect(html).toContain('md-alert-warning');
     expect(html).toContain('<code>');
     expect(html).toContain('<table>');
     expect(html).toContain('<a href="https://example.com">docs</a>');
