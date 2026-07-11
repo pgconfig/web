@@ -3,7 +3,7 @@ import { RiFileCopyLine, RiFileTextLine, RiLightbulbLine } from "@remixicon/vue"
 import { marked } from "marked"
 import { configureMarked } from "@/utils/markdownAlerts"
 import { Button } from "@/components/ui/button"
-import "@/assets/github-alerts.css"
+import "@/assets/markdown-alert-content.css"
 
 configureMarked(marked)
 
