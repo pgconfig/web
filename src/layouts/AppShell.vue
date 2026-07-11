@@ -41,9 +41,16 @@ function onFormChange(formValue) {
 <template>
   <SidebarProvider :default-open="true">
     <Sidebar collapsible="icon">
-      <SidebarHeader class="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center">
+      <SidebarHeader
+        class="group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:py-4"
+      >
         <span class="font-bold text-lg group-data-[collapsible=icon]:hidden">PGConfig</span>
-        <span class="hidden font-bold text-lg group-data-[collapsible=icon]:block">PG</span>
+        <span
+          class="hidden font-semibold text-sm tracking-wide text-sidebar-foreground group-data-[collapsible=icon]:flex [writing-mode:vertical-rl] [text-orientation:mixed]"
+          aria-label="PGConfig"
+        >
+          PGConfig
+        </span>
       </SidebarHeader>
 
       <SidebarContent class="group-data-[collapsible=icon]:hidden overflow-y-auto">
