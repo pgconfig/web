@@ -2,7 +2,7 @@
 import { computed, reactive, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import lodash from "lodash"
-import { RiDatabase2Line, RiServerLine } from "@remixicon/vue"
+import { RiArrowRightSLine, RiDatabase2Line, RiServerLine } from "@remixicon/vue"
 import { inject } from "vue"
 import { parseFormQuery } from "@/utils/formQuery"
 import { Input } from "@/components/ui/input"
@@ -14,9 +14,19 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
 const emit = defineEmits(["changing-form"])
@@ -90,7 +100,7 @@ watch(() => route.fullPath, syncFormFromRoute, { immediate: true })
 
 watch(
   form,
-  (newForm) => {
+  () => {
     const formWithoutGetters = { ...form }
 
     if (!lodash.isEqual(formWithoutGetters, valuesFromURL.value)) {
@@ -119,140 +129,177 @@ function updatePgVersion(value) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-1">
-    <SidebarGroup>
-      <SidebarGroupLabel class="flex items-center gap-2">
-        <RiServerLine class="size-4" />
-        Server
-      </SidebarGroupLabel>
-      <SidebarGroupContent class="space-y-3">
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Operating system
-          </label>
-          <Select v-model="form.os_type">
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select OS" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in osOptions"
-                :key="opt.value"
-                :value="opt.value"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+  <SidebarGroup>
+    <SidebarGroupLabel>Configuration</SidebarGroupLabel>
+    <SidebarMenu>
+      <Collapsible as-child default-open>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="Server">
+            <RiServerLine />
+            <span>Server</span>
+          </SidebarMenuButton>
+          <CollapsibleTrigger as-child>
+            <SidebarMenuAction class="data-[state=open]:rotate-90">
+              <RiArrowRightSLine />
+              <span class="sr-only">Toggle Server</span>
+            </SidebarMenuAction>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Operating system
+                  </label>
+                  <Select v-model="form.os_type">
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select OS" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in osOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
 
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Architecture
-          </label>
-          <Select v-model="form.arch">
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select architecture" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in archOptions"
-                :key="opt.value"
-                :value="opt.value"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Architecture
+                  </label>
+                  <Select v-model="form.arch">
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select architecture" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in archOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
 
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Storage type
-          </label>
-          <Select v-model="form.drive_type">
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select storage" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in driveTypeOptions"
-                :key="opt.value"
-                :value="opt.value"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Storage type
+                  </label>
+                  <Select v-model="form.drive_type">
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select storage" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in driveTypeOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
 
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Number of CPUs
-          </label>
-          <Input
-            type="number"
-            min="1"
-            :model-value="form.cpus"
-            @update:model-value="updateNumberField('cpus', $event)"
-          />
-        </div>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Number of CPUs
+                  </label>
+                  <Input
+                    type="number"
+                    min="1"
+                    :model-value="form.cpus"
+                    @update:model-value="updateNumberField('cpus', $event)"
+                  />
+                </div>
+              </SidebarMenuSubItem>
 
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Total Memory (GB)
-          </label>
-          <Input
-            type="number"
-            min="1"
-            :model-value="form.total_ram"
-            @update:model-value="updateNumberField('total_ram', $event)"
-          />
-        </div>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Total Memory (GB)
+                  </label>
+                  <Input
+                    type="number"
+                    min="1"
+                    :model-value="form.total_ram"
+                    @update:model-value="updateNumberField('total_ram', $event)"
+                  />
+                </div>
+              </SidebarMenuSubItem>
 
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            Max connections
-          </label>
-          <Input
-            type="number"
-            min="1"
-            :model-value="form.max_connections"
-            @update:model-value="updateNumberField('max_connections', $event)"
-          />
-        </div>
-      </SidebarGroupContent>
-    </SidebarGroup>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Max connections
+                  </label>
+                  <Input
+                    type="number"
+                    min="1"
+                    :model-value="form.max_connections"
+                    @update:model-value="updateNumberField('max_connections', $event)"
+                  />
+                </div>
+              </SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
 
-    <SidebarGroup>
-      <SidebarGroupLabel class="flex items-center gap-2">
-        <RiDatabase2Line class="size-4" />
-        Database
-      </SidebarGroupLabel>
-      <SidebarGroupContent class="space-y-3">
-        <div class="space-y-1.5">
-          <label class="text-xs font-medium text-sidebar-foreground/70">
-            PostgreSQL Version
-          </label>
-          <Select
-            :model-value="String(form.pg_version)"
-            @update:model-value="updatePgVersion"
-          >
-            <SelectTrigger class="w-full">
-              <SelectValue placeholder="Select version" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem
-                v-for="opt in pgVersionOptions"
-                :key="String(opt.value)"
-                :value="String(opt.value)"
-              >
-                {{ opt.label }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </SidebarGroupContent>
-    </SidebarGroup>
-  </div>
+      <Collapsible as-child default-open>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="Database">
+            <RiDatabase2Line />
+            <span>Database</span>
+          </SidebarMenuButton>
+          <CollapsibleTrigger as-child>
+            <SidebarMenuAction class="data-[state=open]:rotate-90">
+              <RiArrowRightSLine />
+              <span class="sr-only">Toggle Database</span>
+            </SidebarMenuAction>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    PostgreSQL Version
+                  </label>
+                  <Select
+                    :model-value="String(form.pg_version)"
+                    @update:model-value="updatePgVersion"
+                  >
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select version" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in pgVersionOptions"
+                        :key="String(opt.value)"
+                        :value="String(opt.value)"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    </SidebarMenu>
+  </SidebarGroup>
 </template>

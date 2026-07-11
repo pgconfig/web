@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
@@ -122,6 +122,12 @@
   * {
     @apply border-border outline-ring/50;
     }
+  html,
+  body,
+  #app {
+    height: 100%;
+    overflow: hidden;
+  }
   body {
     @apply bg-background text-foreground;
     @apply font-sans;
@@ -136,4 +142,8 @@
 }
 .comparison-col-selected-header {
   @apply bg-primary/15 text-primary font-medium;
+}
+
+[data-slot="sidebar-wrapper"] {
+  @apply bg-muted;
 }

@@ -29,7 +29,7 @@ function goExport() {
     <Breadcrumb class="min-w-0 flex-1 overflow-hidden">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbPage>Configuration</BreadcrumbPage>
+          <BreadcrumbPage>PostgreSQL Configuration Tool</BreadcrumbPage>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

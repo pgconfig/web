@@ -31,7 +31,9 @@ function goCompare() {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink as-child>
-            <button type="button" @click="goCompare">Configuration</button>
+            <button type="button" @click="goCompare">
+              PostgreSQL Configuration Tool
+            </button>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
