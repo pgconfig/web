@@ -24,7 +24,7 @@ function onFormChange(formValue) {
 </script>
 
 <template>
-  <SidebarProvider :default-open="false" class="h-svh overflow-hidden">
+  <SidebarProvider :default-open="true" class="h-svh overflow-hidden">
     <AppSidebar
       :is-dark="isDark"
       @toggle-theme="emit('toggle-theme')"
