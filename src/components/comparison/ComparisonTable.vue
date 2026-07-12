@@ -13,7 +13,6 @@ import { formatConfigs } from "@/services/formatters"
 import { ENV_COLUMN_TO_PROFILE } from "@/constants/environmentOptions"
 import { valueUpdater } from "@/components/ui/table/utils"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import ComparisonRowDetail from "@/components/comparison/ComparisonRowDetail.vue"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -42,21 +41,21 @@ function buildColumns() {
       cell: ({ row }) =>
         h("div", { class: "flex min-w-0 items-center gap-2" }, [
           h(
-            Button,
+            "span",
             {
-              variant: "ghost",
-              size: "icon",
-              class: "size-8 shrink-0",
-              onClick: () => row.toggleExpanded(),
+              class:
+                "inline-flex size-8 shrink-0 items-center justify-center text-muted-foreground",
+              "aria-hidden": "true",
             },
-            () =>
+            [
               h(row.getIsExpanded() ? RiArrowDownSLine : RiArrowRightSLine, {
                 class: "size-4",
-              })
+              }),
+            ]
           ),
           h(
             "span",
-            { class: "min-w-0 truncate font-medium" },
+            { class: "min-w-0 font-medium break-all" },
             row.original.name
           ),
         ]),
@@ -118,7 +117,10 @@ function envColumnProps(column) {
   const meta = column.columnDef.meta
   if (!meta?.env) return {}
   return {
-    onClick: () => selectProfile(meta.env),
+    onClick: (event) => {
+      event.stopPropagation()
+      selectProfile(meta.env)
+    },
   }
 }
 
@@ -249,7 +251,12 @@ const ComparisonCategoryTable = defineComponent({
                 rows.flatMap((row) => {
                   const mainRow = h(TableRow, {
                     key: row.id,
-                    class: "hover:bg-muted/50 data-[state=selected]:bg-muted",
+                    class: cn(
+                      "cursor-pointer hover:bg-muted/50 data-[state=selected]:bg-muted",
+                      row.getIsExpanded() && "bg-muted/30"
+                    ),
+                    "aria-expanded": row.getIsExpanded(),
+                    onClick: () => row.toggleExpanded(),
                   }, {
                     default: () =>
                       row.getVisibleCells().map((cell) =>

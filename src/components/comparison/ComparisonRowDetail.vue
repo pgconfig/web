@@ -1,11 +1,7 @@
 <script setup>
-import { RiFileCopyLine, RiFileTextLine, RiLightbulbLine } from "@remixicon/vue"
-import { marked } from "marked"
-import { configureMarked } from "@/utils/markdownAlerts"
+import { RiFileTextLine, RiLightbulbLine } from "@remixicon/vue"
+import MarkdownContent from "@/components/markdown/MarkdownContent.vue"
 import { Button } from "@/components/ui/button"
-import "@/assets/markdown-alert-content.css"
-
-configureMarked(marked)
 
 const props = defineProps({
   row: { type: Object, required: true },
@@ -15,20 +11,12 @@ const props = defineProps({
 function confURL(param) {
   return `https://postgresqlco.nf/en/doc/param/${param}/${props.pgVersion}/`
 }
-
-function renderMarkdown(text) {
-  if (!text) return ""
-  return marked(text, { breaks: true })
-}
 </script>
 
 <template>
   <div class="comparison-detail grid grid-cols-1 gap-6 lg:grid-cols-2">
     <div class="comparison-detail-docs min-w-0 space-y-4">
-      <div
-        class="text-sm leading-relaxed text-foreground/90"
-        v-html="renderMarkdown(row.documentation.abstract)"
-      />
+      <MarkdownContent :source="row.documentation.abstract" />
       <div v-if="row.documentation.recomendations" class="space-y-2">
         <p class="text-sm font-medium text-foreground">Suggested readings:</p>
         <ul class="list-disc space-y-1 pl-5 text-sm">
