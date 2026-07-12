@@ -36,7 +36,7 @@ function onFormChange(formValue) {
         <SidebarTrigger class="-ml-1" />
         <Separator
           orientation="vertical"
-          class="mr-2 h-4 shrink-0 self-center"
+          class="mr-2 h-4 shrink-0 data-[orientation=vertical]:!self-center"
         />
         <div
           id="page-header"
