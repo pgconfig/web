@@ -29,6 +29,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  layout: {
+    type: String,
+    default: "page",
+    validator: (value) => ["page", "split"].includes(value),
+  },
 })
 
 const emit = defineEmits(["changing-form"])
@@ -155,8 +160,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex min-h-0 min-w-0 w-full max-w-full flex-col gap-4">
-    <div class="grid min-w-0 gap-4 border-b pb-4 sm:grid-cols-2">
+  <div
+    :class="
+      layout === 'split'
+        ? 'flex h-full min-h-0 min-w-0 w-full max-w-full flex-col gap-3'
+        : 'flex min-h-0 min-w-0 w-full max-w-full flex-col gap-4'
+    "
+  >
+    <div
+      :class="
+        layout === 'split'
+          ? 'grid min-w-0 shrink-0 gap-2'
+          : 'grid min-w-0 gap-4 border-b pb-4 sm:grid-cols-2'
+      "
+    >
       <div class="grid min-w-0 gap-2">
         <label
           for="export-format"
@@ -205,7 +222,11 @@ onMounted(() => {
 
       <label
         for="include-pgbadger"
-        class="flex h-8 min-w-0 items-center gap-2 sm:col-span-2"
+        :class="
+          layout === 'split'
+            ? 'flex min-w-0 items-center gap-2'
+            : 'flex h-8 min-w-0 items-center gap-2 sm:col-span-2'
+        "
       >
         <Switch
           id="include-pgbadger"
@@ -219,7 +240,11 @@ onMounted(() => {
     </div>
 
     <section
-      class="flex min-h-0 min-w-0 w-full max-w-full flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-sm"
+      :class="
+        layout === 'split'
+          ? 'flex min-h-0 min-w-0 w-full max-w-full flex-1 flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-sm'
+          : 'flex min-h-0 min-w-0 w-full max-w-full flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-sm'
+      "
     >
       <div
         class="flex items-center justify-between gap-3 border-b px-3 py-2"
@@ -240,7 +265,7 @@ onMounted(() => {
 
       <pre
         v-if="exportText"
-        class="export-code"
+        :class="['export-code', layout === 'split' && 'export-code--split']"
       ><code ref="codeBlock" :class="['hljs', highlightLang]"></code></pre>
       <p
         v-else
@@ -256,7 +281,15 @@ onMounted(() => {
 @reference "../../assets/globals.css";
 
 pre.export-code {
-  @apply m-0 min-h-[10rem] max-h-[min(60vh,28rem)] w-full max-w-full min-w-0 overflow-auto bg-muted;
+  @apply m-0 min-h-[10rem] max-h-[min(75vh,36rem)] w-full max-w-full min-w-0 overflow-auto bg-muted;
+}
+
+pre.export-code--split {
+  @apply min-h-0 max-h-none min-w-0 flex-1 overflow-x-auto overflow-y-auto;
+}
+
+pre.export-code--split :deep(code.hljs) {
+  @apply block w-max min-w-full max-w-none;
 }
 
 pre.export-code :deep(code.hljs) {

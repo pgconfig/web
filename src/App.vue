@@ -42,8 +42,10 @@ const {
         :is="Component"
         v-else
         :full-response="fullResponse"
+        :exported-response="exportedResponse"
         :pg-version="pgVersion"
         :current-env="currentEnv"
+        @changing-form="setExportForm"
       />
     </RouterView>
   </AppShell>

@@ -30,12 +30,12 @@ const environmentName = computed({
 </script>
 
 <template>
-  <div class="flex min-w-0 items-center gap-2">
+  <div class="flex min-w-0 flex-1 items-center gap-2 sm:flex-none">
     <label class="hidden shrink-0 text-sm font-medium text-muted-foreground sm:inline">
       Application profile
     </label>
     <Select v-model="environmentName">
-      <SelectTrigger class="w-[min(100%,14rem)] sm:w-56">
+      <SelectTrigger class="w-[min(100%,11rem)] sm:w-56">
         <SelectValue placeholder="Select profile" />
       </SelectTrigger>
       <SelectContent>
