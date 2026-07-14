@@ -1,0 +1,305 @@
+<script setup>
+import { computed, reactive, watch } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import lodash from "lodash"
+import { RiArrowRightSLine, RiDatabase2Line, RiServerLine } from "@remixicon/vue"
+import { inject } from "vue"
+import { parseFormQuery } from "@/utils/formQuery"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar"
+
+const emit = defineEmits(["changing-form"])
+
+const setForm = inject("setForm", null)
+
+const route = useRoute()
+const router = useRouter()
+
+const form = reactive({
+  max_connections: 100,
+  pg_version: 18,
+  environment_name: "WEB",
+  total_ram: 4,
+  cpus: 2,
+  drive_type: "SSD",
+  arch: "x86-64",
+  os_type: "linux",
+})
+
+const osOptions = [
+  { value: "linux", label: "GNU/Linux Based" },
+  { value: "windows", label: "Windows Based" },
+  { value: "unix", label: "Unix Based" },
+]
+
+const archOptions = [
+  { value: "x86-64", label: "64 Bits (x86-64)" },
+  { value: "386", label: "32 Bits (386)" },
+]
+
+const driveTypeOptions = [
+  { value: "HDD", label: "HDD Storage" },
+  { value: "SSD", label: "SSD Storage" },
+  { value: "SAN", label: "Network Storage - NAS/SAN" },
+]
+
+const pgVersionOptions = [
+  { value: 18, label: "18 (Latest)" },
+  { value: 17, label: "17" },
+  { value: 16, label: "16" },
+  { value: 15, label: "15" },
+  { value: 14, label: "14" },
+  { value: 13, label: "13 (EOL)" },
+  { value: 12, label: "12 (EOL)" },
+  { value: 11, label: "11 (EOL)" },
+  { value: 10, label: "10 (EOL)" },
+  { value: "9.6", label: "9.6 (EOL)" },
+  { value: "9.5", label: "9.5 (EOL)" },
+  { value: "9.4", label: "9.4 (EOL)" },
+  { value: "9.3", label: "9.3 (EOL)" },
+  { value: "9.2", label: "9.2 (EOL)" },
+  { value: "9.1", label: "9.1 (EOL)" },
+]
+
+const valuesFromURL = computed(() => parseFormQuery(route.query))
+
+function syncFormFromRoute() {
+  const fromUrl = valuesFromURL.value
+  form.max_connections = fromUrl.max_connections
+  form.pg_version = fromUrl.pg_version
+  form.environment_name = fromUrl.environment_name
+  form.total_ram = fromUrl.total_ram
+  form.cpus = fromUrl.cpus
+  form.drive_type = fromUrl.drive_type
+  form.arch = fromUrl.arch
+  form.os_type = fromUrl.os_type
+}
+
+watch(() => route.fullPath, syncFormFromRoute, { immediate: true })
+
+watch(
+  form,
+  () => {
+    const formWithoutGetters = { ...form }
+
+    if (!lodash.isEqual(formWithoutGetters, valuesFromURL.value)) {
+      router
+        .push({
+          query: formWithoutGetters,
+        })
+        .catch((failure) => {
+          console.log(failure)
+        })
+    }
+    const payload = { ...form }
+    emit("changing-form", payload)
+    setForm?.(payload)
+  },
+  { deep: true, immediate: true }
+)
+
+function updateNumberField(field, value) {
+  form[field] = parseInt(String(value), 10) || 1
+}
+
+function updatePgVersion(value) {
+  form.pg_version = parseFloat(String(value))
+}
+</script>
+
+<template>
+  <SidebarGroup>
+    <SidebarGroupLabel>Configuration</SidebarGroupLabel>
+    <SidebarMenu>
+      <Collapsible as-child default-open>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="Server">
+            <RiServerLine />
+            <span>Server</span>
+          </SidebarMenuButton>
+          <CollapsibleTrigger as-child>
+            <SidebarMenuAction class="data-[state=open]:rotate-90">
+              <RiArrowRightSLine />
+              <span class="sr-only">Toggle Server</span>
+            </SidebarMenuAction>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Operating system
+                  </label>
+                  <Select v-model="form.os_type">
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select OS" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in osOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
+
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Architecture
+                  </label>
+                  <Select v-model="form.arch">
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select architecture" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in archOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
+
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Storage type
+                  </label>
+                  <Select v-model="form.drive_type">
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select storage" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in driveTypeOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
+
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Number of CPUs
+                  </label>
+                  <Input
+                    type="number"
+                    min="1"
+                    :model-value="form.cpus"
+                    @update:model-value="updateNumberField('cpus', $event)"
+                  />
+                </div>
+              </SidebarMenuSubItem>
+
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Total Memory (GB)
+                  </label>
+                  <Input
+                    type="number"
+                    min="1"
+                    :model-value="form.total_ram"
+                    @update:model-value="updateNumberField('total_ram', $event)"
+                  />
+                </div>
+              </SidebarMenuSubItem>
+
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    Max connections
+                  </label>
+                  <Input
+                    type="number"
+                    min="1"
+                    :model-value="form.max_connections"
+                    @update:model-value="updateNumberField('max_connections', $event)"
+                  />
+                </div>
+              </SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+
+      <Collapsible as-child default-open>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="Database">
+            <RiDatabase2Line />
+            <span>Database</span>
+          </SidebarMenuButton>
+          <CollapsibleTrigger as-child>
+            <SidebarMenuAction class="data-[state=open]:rotate-90">
+              <RiArrowRightSLine />
+              <span class="sr-only">Toggle Database</span>
+            </SidebarMenuAction>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              <SidebarMenuSubItem>
+                <div class="space-y-1.5 py-1">
+                  <label class="text-xs font-medium text-sidebar-foreground/70">
+                    PostgreSQL Version
+                  </label>
+                  <Select
+                    :model-value="String(form.pg_version)"
+                    @update:model-value="updatePgVersion"
+                  >
+                    <SelectTrigger class="w-full">
+                      <SelectValue placeholder="Select version" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in pgVersionOptions"
+                        :key="String(opt.value)"
+                        :value="String(opt.value)"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SidebarMenuSubItem>
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    </SidebarMenu>
+  </SidebarGroup>
+</template>

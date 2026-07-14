@@ -1,18 +1,21 @@
 /*
- * highlight.js GitHub Dark theme overrides
- * Applied only in dark mode (auto or forced via data-theme)
- * Uses Bulma's dark scheme-main-ter for background and border colors
- * to stay consistent with the rest of the dark theme.
+ * highlight.js theme overrides aligned with shadcn tokens.
+ * Light mode uses github.css syntax colors; dark mode uses GitHub Dark palette.
  */
+
+/* Light mode: let pre/export wrapper provide muted background */
+.hljs {
+  background: transparent;
+}
 
 @media (prefers-color-scheme: dark) {
   .hljs {
-    color: var(--bulma-text);
-    background: var(--bulma-scheme-main-ter);
+    color: var(--foreground);
+    background: var(--muted);
   }
   pre {
-    background: var(--bulma-scheme-main-ter) !important;
-    border-color: var(--bulma-border) !important;
+    background: var(--muted) !important;
+    border-color: var(--border) !important;
   }
   .hljs-doctag,
   .hljs-keyword,
@@ -62,65 +65,65 @@
     color: #7ee787;
   }
   .hljs-subst {
-    color: var(--bulma-text);
+    color: var(--foreground);
   }
 }
 
-[data-theme="dark"] .hljs {
-  color: var(--bulma-text);
-  background: var(--bulma-scheme-main-ter);
+.dark .hljs {
+  color: var(--foreground);
+  background: var(--muted);
 }
-[data-theme="dark"] pre {
-  background: var(--bulma-scheme-main-ter) !important;
-  border-color: var(--bulma-border) !important;
+.dark pre {
+  background: var(--muted) !important;
+  border-color: var(--border) !important;
 }
-[data-theme="dark"] .hljs-doctag,
-[data-theme="dark"] .hljs-keyword,
-[data-theme="dark"] .hljs-meta .hljs-keyword,
-[data-theme="dark"] .hljs-template-tag,
-[data-theme="dark"] .hljs-template-variable,
-[data-theme="dark"] .hljs-type,
-[data-theme="dark"] .hljs-variable.language_ {
+.dark .hljs-doctag,
+.dark .hljs-keyword,
+.dark .hljs-meta .hljs-keyword,
+.dark .hljs-template-tag,
+.dark .hljs-template-variable,
+.dark .hljs-type,
+.dark .hljs-variable.language_ {
   color: #ff7b72;
 }
-[data-theme="dark"] .hljs-title,
-[data-theme="dark"] .hljs-title.class_,
-[data-theme="dark"] .hljs-title.class_.inherited__,
-[data-theme="dark"] .hljs-title.function_ {
+.dark .hljs-title,
+.dark .hljs-title.class_,
+.dark .hljs-title.class_.inherited__,
+.dark .hljs-title.function_ {
   color: #d2a8ff;
 }
-[data-theme="dark"] .hljs-attr,
-[data-theme="dark"] .hljs-attribute,
-[data-theme="dark"] .hljs-literal,
-[data-theme="dark"] .hljs-meta,
-[data-theme="dark"] .hljs-number,
-[data-theme="dark"] .hljs-operator,
-[data-theme="dark"] .hljs-variable,
-[data-theme="dark"] .hljs-selector-attr,
-[data-theme="dark"] .hljs-selector-class,
-[data-theme="dark"] .hljs-selector-id {
+.dark .hljs-attr,
+.dark .hljs-attribute,
+.dark .hljs-literal,
+.dark .hljs-meta,
+.dark .hljs-number,
+.dark .hljs-operator,
+.dark .hljs-variable,
+.dark .hljs-selector-attr,
+.dark .hljs-selector-class,
+.dark .hljs-selector-id {
   color: #79c0ff;
 }
-[data-theme="dark"] .hljs-regexp,
-[data-theme="dark"] .hljs-string,
-[data-theme="dark"] .hljs-meta .hljs-string {
+.dark .hljs-regexp,
+.dark .hljs-string,
+.dark .hljs-meta .hljs-string {
   color: #a5d6ff;
 }
-[data-theme="dark"] .hljs-built_in,
-[data-theme="dark"] .hljs-symbol {
+.dark .hljs-built_in,
+.dark .hljs-symbol {
   color: #ffa657;
 }
-[data-theme="dark"] .hljs-comment,
-[data-theme="dark"] .hljs-code,
-[data-theme="dark"] .hljs-formula {
+.dark .hljs-comment,
+.dark .hljs-code,
+.dark .hljs-formula {
   color: #8b949e;
 }
-[data-theme="dark"] .hljs-name,
-[data-theme="dark"] .hljs-quote,
-[data-theme="dark"] .hljs-selector-tag,
-[data-theme="dark"] .hljs-selector-pseudo {
+.dark .hljs-name,
+.dark .hljs-quote,
+.dark .hljs-selector-tag,
+.dark .hljs-selector-pseudo {
   color: #7ee787;
 }
-[data-theme="dark"] .hljs-subst {
-  color: var(--bulma-text);
+.dark .hljs-subst {
+  color: var(--foreground);
 }

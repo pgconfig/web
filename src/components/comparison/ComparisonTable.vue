@@ -1,0 +1,499 @@
+<script setup>
+import { computed, defineComponent, h, onMounted, ref } from "vue"
+import { useMediaQuery } from "@vueuse/core"
+import { useRoute, useRouter } from "vue-router"
+import {
+  FlexRender,
+  getCoreRowModel,
+  getExpandedRowModel,
+  useVueTable,
+} from "@tanstack/vue-table"
+import { RiArrowDownSLine, RiArrowRightSLine } from "@remixicon/vue"
+import { toast } from "vue-sonner"
+import { formatConfigs } from "@/services/formatters"
+import { ENV_COLUMN_TO_PROFILE, profileColumnLabel } from "@/constants/environmentOptions"
+import { valueUpdater } from "@/components/ui/table/utils"
+import { cn } from "@/lib/utils"
+import ComparisonRowDetail from "@/components/comparison/ComparisonRowDetail.vue"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+const ALL_ENVS = ["web", "oltp", "dw", "mixed", "desktop"]
+
+const COLUMN_WIDTHS = {
+  name: "29%",
+  default_value: "13%",
+  env: "11.6%",
+}
+
+function envKeyForProfile(currentEnv) {
+  const match = Object.entries(ENV_COLUMN_TO_PROFILE).find(
+    ([, profile]) => profile.toUpperCase() === currentEnv.toUpperCase()
+  )
+  return match?.[0] ?? "web"
+}
+
+function buildColumns() {
+  return [
+    {
+      accessorKey: "name",
+      header: () => "Parameter",
+      cell: ({ row }) =>
+        h("div", { class: "flex min-w-0 items-center gap-2" }, [
+          h(
+            "span",
+            {
+              class:
+                "inline-flex size-8 shrink-0 items-center justify-center text-muted-foreground",
+              "aria-hidden": "true",
+            },
+            [
+              h(row.getIsExpanded() ? RiArrowDownSLine : RiArrowRightSLine, {
+                class: "size-4",
+              }),
+            ]
+          ),
+          h(
+            "span",
+            {
+              class: "min-w-0 font-medium leading-snug",
+              title: row.original.name,
+            },
+            row.original.name
+          ),
+        ]),
+    },
+    {
+      id: "default_value",
+      accessorFn: (row) => row.documentation?.default_value ?? "",
+      header: () => "Default Value",
+      meta: { columnType: "default" },
+      cell: (info) => h("span", String(info.getValue() ?? "")),
+    },
+    ...ALL_ENVS.map((env) => ({
+      accessorKey: env,
+      header: () => env.toUpperCase(),
+      meta: { env },
+      cell: (info) => h("span", String(info.getValue() ?? "")),
+    })),
+  ]
+}
+
+function renderColgroup() {
+  return h("colgroup", null, [
+    h("col", { style: { width: COLUMN_WIDTHS.name } }),
+    h("col", { style: { width: COLUMN_WIDTHS.default_value } }),
+    ...ALL_ENVS.map(() => h("col", { style: { width: COLUMN_WIDTHS.env } })),
+  ])
+}
+
+function renderMobileCategory(params, categoryProps, mobileExpanded, toggleMobile) {
+  const envKey = envKeyForProfile(categoryProps.currentEnv)
+  const profileLabel = profileColumnLabel(categoryProps.currentEnv)
+
+  return h("div", { class: "overflow-hidden rounded-md border" }, [
+    h(
+      "div",
+      {
+        class:
+          "grid grid-cols-2 border-b bg-muted/30 text-xs font-medium",
+      },
+      [
+        h(
+          "div",
+          { class: "comparison-col-default px-3 py-2 text-muted-foreground" },
+          "Default"
+        ),
+        h(
+          "div",
+          {
+            class:
+              "comparison-col-selected-header px-3 py-2",
+          },
+          profileLabel
+        ),
+      ]
+    ),
+    h(
+      "div",
+      { class: "divide-y" },
+      params.map((param) => {
+        const isExpanded = mobileExpanded.has(param.name)
+        return h("div", { key: param.name, class: "bg-background" }, [
+          h(
+            "button",
+            {
+              type: "button",
+              class:
+                "flex w-full items-center gap-2 px-3 py-3 text-left hover:bg-muted/50",
+              "aria-expanded": isExpanded,
+              onClick: () => toggleMobile(param.name),
+            },
+            [
+              h(isExpanded ? RiArrowDownSLine : RiArrowRightSLine, {
+                class: "size-4 shrink-0 text-muted-foreground",
+              }),
+              h(
+                "span",
+                { class: "min-w-0 flex-1 font-medium leading-snug" },
+                param.name
+              ),
+            ]
+          ),
+          h(
+            "div",
+            { class: "grid grid-cols-2 border-t bg-border" },
+            [
+              h(
+                "div",
+                {
+                  class:
+                    "comparison-col-default bg-background px-3 py-2 tabular-nums text-sm",
+                },
+                String(param.documentation?.default_value ?? "")
+              ),
+              h(
+                "div",
+                {
+                  class:
+                    "comparison-col-selected bg-background px-3 py-2 tabular-nums text-sm",
+                },
+                String(param[envKey] ?? "")
+              ),
+            ]
+          ),
+          isExpanded
+            ? h(
+                "div",
+                { class: "border-t bg-muted/40 p-4" },
+                h(ComparisonRowDetail, {
+                  row: param,
+                  pgVersion: categoryProps.pgVersion,
+                })
+              )
+            : null,
+        ])
+      })
+    ),
+  ])
+}
+
+const props = defineProps({
+  fullResponse: {
+    type: Array,
+    required: true,
+  },
+  pgVersion: {
+    type: String,
+    required: true,
+  },
+  currentEnv: {
+    type: String,
+    required: true,
+  },
+})
+
+const route = useRoute()
+const router = useRouter()
+
+function selectProfile(env) {
+  const environment_name = ENV_COLUMN_TO_PROFILE[env]
+  if (!environment_name) return
+  router.push({
+    query: {
+      ...route.query,
+      environment_name,
+    },
+  })
+}
+
+function envColumnProps(column) {
+  const meta = column.columnDef.meta
+  if (!meta?.env) return {}
+  return {
+    onClick: (event) => {
+      event.stopPropagation()
+      selectProfile(meta.env)
+    },
+  }
+}
+
+const formattedConfigs = computed(() => {
+  if (!Array.isArray(props.fullResponse) || props.fullResponse.length === 0) return []
+  return formatConfigs(props.fullResponse)
+})
+
+onMounted(() => {
+  toast.info(
+    `Comparing the ${props.currentEnv.toUpperCase()} profile against all profiles.`
+  )
+})
+
+function isSelected(env, currentEnv) {
+  return env.toUpperCase() === currentEnv.toUpperCase()
+}
+
+function headerClass(column, currentEnv) {
+  const meta = column.columnDef.meta
+  if (meta?.columnType === "default") return "comparison-col-default"
+  if (meta?.env && isSelected(meta.env, currentEnv)) {
+    return cn("comparison-col-selected-header", "cursor-pointer")
+  }
+  if (meta?.env) return "cursor-pointer"
+  return ""
+}
+
+function cellClass(column, currentEnv) {
+  const meta = column.columnDef.meta
+  if (meta?.columnType === "default") {
+    return "comparison-col-default tabular-nums"
+  }
+  if (meta?.env && isSelected(meta.env, currentEnv)) {
+    return cn("comparison-col-selected", "tabular-nums", "cursor-pointer")
+  }
+  if (meta?.env) return cn("tabular-nums", "cursor-pointer")
+  return ""
+}
+
+const ComparisonCategoryTable = defineComponent({
+  name: "ComparisonCategoryTable",
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    params: {
+      type: Array,
+      required: true,
+    },
+    currentEnv: {
+      type: String,
+      required: true,
+    },
+    pgVersion: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(categoryProps) {
+    const expanded = ref({})
+    const mobileExpanded = ref(new Set())
+    const isCompactTable = useMediaQuery("(max-width: 1023px)")
+
+    function toggleMobile(name) {
+      const next = new Set(mobileExpanded.value)
+      if (next.has(name)) next.delete(name)
+      else next.add(name)
+      mobileExpanded.value = next
+    }
+
+    const table = useVueTable({
+      get data() {
+        return categoryProps.params
+      },
+      columns: buildColumns(),
+      state: {
+        get expanded() {
+          return expanded.value
+        },
+      },
+      onExpandedChange: (updater) => valueUpdater(updater, expanded),
+      getCoreRowModel: getCoreRowModel(),
+      getExpandedRowModel: getExpandedRowModel(),
+      getRowCanExpand: () => true,
+    })
+
+    return () => {
+      const rows = table.getRowModel().rows
+
+      return h("section", { class: "space-y-4" }, [
+        h(
+          "h2",
+          {
+            class:
+              "border-b pb-4 text-sm font-medium leading-none",
+          },
+          categoryProps.title
+        ),
+        isCompactTable.value
+          ? h(
+              "p",
+              { class: "text-xs text-muted-foreground" },
+              `Comparing PostgreSQL defaults with recommended ${profileColumnLabel(categoryProps.currentEnv)} values. Change application profile above to switch environments.`
+            )
+          : null,
+        isCompactTable.value
+          ? renderMobileCategory(
+              categoryProps.params,
+              categoryProps,
+              mobileExpanded.value,
+              toggleMobile
+            )
+          : h(Table, { class: "table-fixed border-0" }, {
+              default: () => [
+                renderColgroup(),
+                h(TableHeader, null, {
+              default: () =>
+                table.getHeaderGroups().map((headerGroup) =>
+                  h(TableRow, { key: headerGroup.id }, {
+                    default: () =>
+                      headerGroup.headers.map((header) =>
+                        h(
+                          TableHead,
+                          {
+                            key: header.id,
+                            class: headerClass(
+                              header.column,
+                              categoryProps.currentEnv
+                            ),
+                            ...envColumnProps(header.column),
+                          },
+                          {
+                            default: () =>
+                              header.isPlaceholder
+                                ? null
+                                : h(FlexRender, {
+                                    render: header.column.columnDef.header,
+                                    props: header.getContext(),
+                                  }),
+                          }
+                        )
+                      ),
+                  })
+                ),
+            }),
+            h(TableBody, null, {
+              default: () =>
+                rows.flatMap((row) => {
+                  const mainRow = h(TableRow, {
+                    key: row.id,
+                    class: cn(
+                      "cursor-pointer hover:bg-muted/50 data-[state=selected]:bg-muted",
+                      row.getIsExpanded() && "bg-muted/30"
+                    ),
+                    "aria-expanded": row.getIsExpanded(),
+                    onClick: () => row.toggleExpanded(),
+                  }, {
+                    default: () =>
+                      row.getVisibleCells().map((cell) =>
+                        h(
+                          TableCell,
+                          {
+                            key: cell.id,
+                            class: cellClass(
+                              cell.column,
+                              categoryProps.currentEnv
+                            ),
+                            ...envColumnProps(cell.column),
+                          },
+                          {
+                            default: () =>
+                              h(FlexRender, {
+                                render: cell.column.columnDef.cell,
+                                props: cell.getContext(),
+                              }),
+                          }
+                        )
+                      ),
+                  })
+
+                  if (!row.getIsExpanded()) {
+                    return [mainRow]
+                  }
+
+                  const detailRow = h(
+                    TableRow,
+                    { key: `${row.id}-detail` },
+                    {
+                      default: () =>
+                        h(
+                          TableCell,
+                          {
+                            colspan: row.getVisibleCells().length,
+                            class: "bg-muted/40 p-4",
+                          },
+                          {
+                            default: () =>
+                              h(ComparisonRowDetail, {
+                                row: row.original,
+                                pgVersion: categoryProps.pgVersion,
+                              }),
+                          }
+                        ),
+                    }
+                  )
+
+                  return [mainRow, detailRow]
+                }),
+            }),
+          ],
+        }),
+      ])
+    }
+  },
+})
+</script>
+
+<template>
+  <div v-if="formattedConfigs.length > 0" class="comparison-tables min-w-0 max-w-full space-y-8">
+    <ComparisonCategoryTable
+      v-for="item in formattedConfigs"
+      :key="item.name"
+      :title="item.name"
+      :params="item.params"
+      :pg-version="pgVersion"
+      :current-env="currentEnv"
+    />
+  </div>
+  <div v-else class="space-y-3 py-8">
+    <Skeleton class="h-8 w-48" />
+    <Skeleton class="h-40 w-full" />
+    <Skeleton class="h-40 w-full" />
+  </div>
+</template>
+
+<style scoped>
+.abstract-text {
+  margin-top: 10px;
+  margin-bottom: 1rem;
+}
+
+.comparison-tables :deep([data-slot="table"]) {
+  table-layout: fixed;
+}
+
+.comparison-tables :deep(th),
+.comparison-tables :deep(td) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comparison-tables :deep(th:first-child),
+.comparison-tables :deep(td:first-child) {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.comparison-tables :deep(td.comparison-detail-cell) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.comparison-detail-docs :deep(p) {
+  margin-bottom: 0.75rem;
+}
+
+.comparison-detail-docs :deep(p:last-child) {
+  margin-bottom: 0;
+}
+</style>
