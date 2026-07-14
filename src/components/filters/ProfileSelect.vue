@@ -35,7 +35,7 @@ const environmentName = computed({
       Application profile
     </label>
     <Select v-model="environmentName">
-      <SelectTrigger class="w-[min(100%,11rem)] sm:w-56">
+      <SelectTrigger class="w-full min-w-0 max-w-none sm:w-56">
         <SelectValue placeholder="Select profile" />
       </SelectTrigger>
       <SelectContent>

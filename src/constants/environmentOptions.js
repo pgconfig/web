@@ -13,3 +13,19 @@ export const ENV_COLUMN_TO_PROFILE = {
   mixed: "Mixed",
   desktop: "Desktop",
 }
+
+export function profileLabelFor(value) {
+  return (
+    ENVIRONMENT_OPTIONS.find(
+      (option) => option.value.toUpperCase() === String(value ?? "").toUpperCase()
+    )?.label ?? value
+  )
+}
+
+export function profileColumnLabel(value) {
+  return (
+    ENVIRONMENT_OPTIONS.find(
+      (option) => option.value.toUpperCase() === String(value ?? "").toUpperCase()
+    )?.value ?? value
+  )
+}

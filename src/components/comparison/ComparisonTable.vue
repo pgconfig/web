@@ -1,5 +1,6 @@
 <script setup>
 import { computed, defineComponent, h, onMounted, ref } from "vue"
+import { useMediaQuery } from "@vueuse/core"
 import { useRoute, useRouter } from "vue-router"
 import {
   FlexRender,
@@ -10,7 +11,7 @@ import {
 import { RiArrowDownSLine, RiArrowRightSLine } from "@remixicon/vue"
 import { toast } from "vue-sonner"
 import { formatConfigs } from "@/services/formatters"
-import { ENV_COLUMN_TO_PROFILE } from "@/constants/environmentOptions"
+import { ENV_COLUMN_TO_PROFILE, profileColumnLabel } from "@/constants/environmentOptions"
 import { valueUpdater } from "@/components/ui/table/utils"
 import { cn } from "@/lib/utils"
 import ComparisonRowDetail from "@/components/comparison/ComparisonRowDetail.vue"
@@ -26,11 +27,17 @@ import {
 
 const ALL_ENVS = ["web", "oltp", "dw", "mixed", "desktop"]
 
-// Fixed column widths so every category table aligns vertically.
 const COLUMN_WIDTHS = {
   name: "29%",
   default_value: "13%",
   env: "11.6%",
+}
+
+function envKeyForProfile(currentEnv) {
+  const match = Object.entries(ENV_COLUMN_TO_PROFILE).find(
+    ([, profile]) => profile.toUpperCase() === currentEnv.toUpperCase()
+  )
+  return match?.[0] ?? "web"
 }
 
 function buildColumns() {
@@ -55,7 +62,10 @@ function buildColumns() {
           ),
           h(
             "span",
-            { class: "min-w-0 font-medium break-all" },
+            {
+              class: "min-w-0 font-medium leading-snug",
+              title: row.original.name,
+            },
             row.original.name
           ),
         ]),
@@ -81,6 +91,97 @@ function renderColgroup() {
     h("col", { style: { width: COLUMN_WIDTHS.name } }),
     h("col", { style: { width: COLUMN_WIDTHS.default_value } }),
     ...ALL_ENVS.map(() => h("col", { style: { width: COLUMN_WIDTHS.env } })),
+  ])
+}
+
+function renderMobileCategory(params, categoryProps, mobileExpanded, toggleMobile) {
+  const envKey = envKeyForProfile(categoryProps.currentEnv)
+  const profileLabel = profileColumnLabel(categoryProps.currentEnv)
+
+  return h("div", { class: "overflow-hidden rounded-md border" }, [
+    h(
+      "div",
+      {
+        class:
+          "grid grid-cols-2 border-b bg-muted/30 text-xs font-medium",
+      },
+      [
+        h(
+          "div",
+          { class: "comparison-col-default px-3 py-2 text-muted-foreground" },
+          "Default"
+        ),
+        h(
+          "div",
+          {
+            class:
+              "comparison-col-selected-header px-3 py-2",
+          },
+          profileLabel
+        ),
+      ]
+    ),
+    h(
+      "div",
+      { class: "divide-y" },
+      params.map((param) => {
+        const isExpanded = mobileExpanded.has(param.name)
+        return h("div", { key: param.name, class: "bg-background" }, [
+          h(
+            "button",
+            {
+              type: "button",
+              class:
+                "flex w-full items-center gap-2 px-3 py-3 text-left hover:bg-muted/50",
+              "aria-expanded": isExpanded,
+              onClick: () => toggleMobile(param.name),
+            },
+            [
+              h(isExpanded ? RiArrowDownSLine : RiArrowRightSLine, {
+                class: "size-4 shrink-0 text-muted-foreground",
+              }),
+              h(
+                "span",
+                { class: "min-w-0 flex-1 font-medium leading-snug" },
+                param.name
+              ),
+            ]
+          ),
+          h(
+            "div",
+            { class: "grid grid-cols-2 border-t bg-border" },
+            [
+              h(
+                "div",
+                {
+                  class:
+                    "comparison-col-default bg-background px-3 py-2 tabular-nums text-sm",
+                },
+                String(param.documentation?.default_value ?? "")
+              ),
+              h(
+                "div",
+                {
+                  class:
+                    "comparison-col-selected bg-background px-3 py-2 tabular-nums text-sm",
+                },
+                String(param[envKey] ?? "")
+              ),
+            ]
+          ),
+          isExpanded
+            ? h(
+                "div",
+                { class: "border-t bg-muted/40 p-4" },
+                h(ComparisonRowDetail, {
+                  row: param,
+                  pgVersion: categoryProps.pgVersion,
+                })
+              )
+            : null,
+        ])
+      })
+    ),
   ])
 }
 
@@ -183,13 +284,21 @@ const ComparisonCategoryTable = defineComponent({
   },
   setup(categoryProps) {
     const expanded = ref({})
-    const columns = buildColumns()
+    const mobileExpanded = ref(new Set())
+    const isCompactTable = useMediaQuery("(max-width: 1023px)")
+
+    function toggleMobile(name) {
+      const next = new Set(mobileExpanded.value)
+      if (next.has(name)) next.delete(name)
+      else next.add(name)
+      mobileExpanded.value = next
+    }
 
     const table = useVueTable({
       get data() {
         return categoryProps.params
       },
-      columns,
+      columns: buildColumns(),
       state: {
         get expanded() {
           return expanded.value
@@ -213,7 +322,21 @@ const ComparisonCategoryTable = defineComponent({
           },
           categoryProps.title
         ),
-        h(Table, { class: "table-fixed border-0" }, {
+        isCompactTable.value
+          ? h(
+              "p",
+              { class: "text-xs text-muted-foreground" },
+              `Comparing PostgreSQL defaults with recommended ${profileColumnLabel(categoryProps.currentEnv)} values. Change application profile above to switch environments.`
+            )
+          : null,
+        isCompactTable.value
+          ? renderMobileCategory(
+              categoryProps.params,
+              categoryProps,
+              mobileExpanded.value,
+              toggleMobile
+            )
+          : h(Table, { class: "table-fixed border-0" }, {
               default: () => [
                 renderColgroup(),
                 h(TableHeader, null, {

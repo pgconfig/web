@@ -1,5 +1,6 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import lodash from "lodash";
 import { toast } from "vue-sonner";
 import { buildUrlArgs, parseFormQuery } from "@/utils/formQuery";
 
@@ -60,6 +61,7 @@ export function useTuningConfig(http) {
   }
 
   function setForm(newForm) {
+    if (form.value && lodash.isEqual(form.value, newForm)) return;
     form.value = newForm;
     const args = buildUrlArgs(newForm);
     if (args) {
@@ -84,6 +86,16 @@ export function useTuningConfig(http) {
       bootstrapFromRoute();
     }
   });
+
+  watch(
+    () => route.query,
+    (query) => {
+      const parsed = parseFormQuery(query);
+      if (form.value && lodash.isEqual(form.value, parsed)) return;
+      setForm(parsed);
+    },
+    { deep: true }
+  );
 
   watch(exportArgs, (opts) => {
     if (opts && urlArgs.value) {
