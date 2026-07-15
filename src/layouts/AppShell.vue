@@ -14,13 +14,7 @@ defineProps<{
 
 const emit = defineEmits<{
   "toggle-theme": []
-  "form-change": [form: unknown]
-  "export-form-change": [exportForm: unknown]
 }>()
-
-function onFormChange(formValue) {
-  emit("form-change", formValue)
-}
 </script>
 
 <template>
@@ -28,7 +22,6 @@ function onFormChange(formValue) {
     <AppSidebar
       :is-dark="isDark"
       @toggle-theme="emit('toggle-theme')"
-      @form-change="onFormChange"
     />
 
     <SidebarInset class="min-h-0 min-w-0 overflow-hidden">

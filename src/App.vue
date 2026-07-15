@@ -11,6 +11,7 @@ const { isDark, toggleTheme } = useTheme()
 const tuning = useTuningConfig(http)
 
 provide("setForm", tuning.setForm)
+provide("apiVersion", tuning.apiVersion)
 
 const {
   isLoading,
@@ -18,7 +19,6 @@ const {
   exportedResponse,
   pgVersion,
   currentEnv,
-  setForm,
   setExportForm,
 } = tuning
 </script>
@@ -28,7 +28,6 @@ const {
     :is-loading="isLoading"
     :is-dark="isDark"
     @toggle-theme="toggleTheme"
-    @form-change="setForm"
   >
     <RouterView v-slot="{ Component, route }">
       <component

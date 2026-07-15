@@ -11,6 +11,33 @@ export function useTuningConfig(http) {
   const exportForm = ref(null);
   const fullResponse = ref([]);
   const exportedResponse = ref({ output: {} });
+  const apiVersion = ref(null);
+
+  function captureApiVersion(responseData) {
+    const version = responseData?.meta?.version;
+    if (version) {
+      apiVersion.value = version;
+    }
+  }
+
+  async function callAPI(url, opts, args) {
+    isLoading.value = true;
+    let output = {};
+    try {
+      const response = await http.get(`${url}?${opts}&${args}`);
+      if (response.data && typeof response.data === "object") {
+        captureApiVersion(response.data);
+      }
+      output = response.data.data;
+      if (typeof response.data === "string") output = response.data;
+    } catch (e) {
+      toast.error("Could not get data from the API", {
+        description: String(e),
+      });
+    }
+    isLoading.value = false;
+    return output;
+  }
 
   const pgVersion = computed(() => form.value?.pg_version?.toString() ?? "");
   const currentEnv = computed(() => form.value?.environment_name ?? "");
@@ -24,22 +51,6 @@ export function useTuningConfig(http) {
       .map(([k, v]) => `${k}=${v}`)
       .join("&");
   });
-
-  async function callAPI(url, opts, args) {
-    isLoading.value = true;
-    let output = {};
-    try {
-      const response = await http.get(`${url}?${opts}&${args}`);
-      output = response.data.data;
-      if (typeof response.data === "string") output = response.data;
-    } catch (e) {
-      toast.error("Could not get data from the API", {
-        description: String(e),
-      });
-    }
-    isLoading.value = false;
-    return output;
-  }
 
   async function updateComparisonResponse(args) {
     if (args === "") return;
@@ -109,6 +120,7 @@ export function useTuningConfig(http) {
     exportForm,
     fullResponse,
     exportedResponse,
+    apiVersion,
     pgVersion,
     currentEnv,
     setForm,

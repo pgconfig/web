@@ -6,13 +6,12 @@ import { FileDown } from "@lucide/vue"
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import ProfileSelect from "@/components/filters/ProfileSelect.vue"
+import ConfigToolbar from "@/components/filters/ConfigToolbar.vue"
 import ExportPanel from "@/components/export/ExportPanel.vue"
 import { useExportPanel } from "@/composables/useExportPanel"
 
@@ -47,14 +46,6 @@ function goCompare() {
     <Breadcrumb class="hidden min-w-0 flex-1 overflow-hidden md:block">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink as-child>
-            <button type="button" @click="goCompare">
-              PostgreSQL Configuration Tool
-            </button>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
           <BreadcrumbPage>Export</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
@@ -68,6 +59,7 @@ function goCompare() {
   </Teleport>
 
   <div v-if="!isDesktop" class="export-page w-full min-w-0 max-w-full">
+    <ConfigToolbar class="mb-4" />
     <div class="mb-4 flex items-center gap-2">
       <FileDown class="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
       <h1 class="text-base font-semibold">Export</h1>

@@ -2,11 +2,9 @@
 import {
   RiBookOpenLine,
   RiGithubFill,
-  RiHomeLine,
   RiMoonLine,
   RiSunLine,
 } from "@remixicon/vue"
-import { useRouter } from "vue-router"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -23,23 +21,12 @@ defineProps({
 })
 
 const emit = defineEmits(["toggle-theme"])
-const router = useRouter()
-
-function goHome() {
-  router.push({ path: "/", query: router.currentRoute.value.query })
-}
 </script>
 
 <template>
   <SidebarGroup>
     <SidebarGroupContent>
       <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton tooltip="Home" @click="goHome">
-            <RiHomeLine />
-            <span>Home</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
         <SidebarMenuItem>
           <SidebarMenuButton as-child tooltip="Contribute">
             <a

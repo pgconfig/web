@@ -8,10 +8,10 @@ import {
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import ProfileSelect from "@/components/filters/ProfileSelect.vue"
+import ConfigToolbar from "@/components/filters/ConfigToolbar.vue"
 import ComparisonTable from "@/components/comparison/ComparisonTable.vue"
 import ExportPanel from "@/components/export/ExportPanel.vue"
 import { useExportPanel } from "@/composables/useExportPanel"
@@ -51,10 +51,6 @@ function goExportPage() {
     <Breadcrumb class="hidden min-w-0 flex-1 overflow-hidden md:block">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbPage>PostgreSQL Configuration Tool</BreadcrumbPage>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
           <BreadcrumbPage>Profile Comparison</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
@@ -80,6 +76,7 @@ function goExportPage() {
       :class="!isResizing ? 'lg:transition-[padding-right] lg:duration-200 lg:ease-linear' : ''"
       :style="tableAreaStyle"
     >
+      <ConfigToolbar class="mb-4" />
       <ComparisonTable
         :full-response="fullResponse"
         :pg-version="pgVersion"
