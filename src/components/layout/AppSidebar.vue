@@ -76,7 +76,7 @@ function goCompare() {
             class="inline-flex items-baseline font-mono-brand text-[1.5rem] leading-none tracking-tight"
           >
             <span class="font-medium text-sidebar-foreground/50">pg</span><span class="font-bold text-sidebar-foreground">config</span><span class="font-medium text-sidebar-foreground/45">=#</span><span
-              class="terminal-cursor ml-px inline-block h-[1.1em] w-[0.55em] translate-y-[0.04em] bg-sidebar-foreground"
+              class="terminal-cursor ml-[1ch] inline-block h-[1.1em] w-[0.55em] translate-y-[0.04em] bg-sidebar-foreground"
               aria-hidden="true"
             />
           </span>
