@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import ProfileSelect from "@/components/filters/ProfileSelect.vue"
 import ConfigToolbar from "@/components/filters/ConfigToolbar.vue"
+import PageToolbar from "@/components/layout/PageToolbar.vue"
 import ComparisonTable from "@/components/comparison/ComparisonTable.vue"
 import ExportPanel from "@/components/export/ExportPanel.vue"
 import { useExportPanel } from "@/composables/useExportPanel"
@@ -70,13 +71,16 @@ function goExportPage() {
     </div>
   </Teleport>
 
+  <PageToolbar>
+    <ConfigToolbar />
+  </PageToolbar>
+
   <div class="compare-split relative w-full min-w-0 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
     <div
-      class="min-w-0 w-full lg:min-h-0 lg:flex-1 lg:overflow-auto lg:px-4 lg:pb-4"
+      class="min-w-0 w-full lg:min-h-0 lg:flex-1 lg:overflow-auto lg:pb-4"
       :class="!isResizing ? 'lg:transition-[padding-right] lg:duration-200 lg:ease-linear' : ''"
       :style="tableAreaStyle"
     >
-      <ConfigToolbar class="mb-4" />
       <ComparisonTable
         :full-response="fullResponse"
         :pg-version="pgVersion"
@@ -87,7 +91,7 @@ function goExportPage() {
     <aside
       v-if="isDesktop"
       id="export-panel"
-      class="export-panel fixed top-16 right-0 z-30 flex h-[calc(100svh-4rem)] max-w-[40rem] flex-col border-l bg-background shadow-sm"
+      class="export-panel fixed right-0 z-30 flex max-w-[40rem] flex-col border-l bg-background shadow-sm top-[var(--app-chrome-height,4rem)] h-[calc(100svh-var(--app-chrome-height,4rem))]"
       :class="[
         exportOpen
           ? 'translate-x-0'

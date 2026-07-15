@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from "vue"
 import AppSidebar from "@/components/layout/AppSidebar.vue"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -15,6 +16,44 @@ defineProps<{
 const emit = defineEmits<{
   "toggle-theme": []
 }>()
+
+const chromeRef = ref<HTMLElement | null>(null)
+const pageToolbarRef = ref<HTMLElement | null>(null)
+const chromeHeight = ref("4rem")
+const hasPageToolbar = ref(false)
+
+let toolbarObserver: MutationObserver | null = null
+let chromeObserver: ResizeObserver | null = null
+
+function updateToolbarVisibility() {
+  hasPageToolbar.value = (pageToolbarRef.value?.childElementCount ?? 0) > 0
+  updateChromeHeight()
+}
+
+function updateChromeHeight() {
+  if (chromeRef.value) {
+    chromeHeight.value = `${chromeRef.value.offsetHeight}px`
+  }
+}
+
+onMounted(() => {
+  if (pageToolbarRef.value) {
+    updateToolbarVisibility()
+    toolbarObserver = new MutationObserver(updateToolbarVisibility)
+    toolbarObserver.observe(pageToolbarRef.value, { childList: true, subtree: true })
+  }
+
+  if (chromeRef.value) {
+    updateChromeHeight()
+    chromeObserver = new ResizeObserver(updateChromeHeight)
+    chromeObserver.observe(chromeRef.value)
+  }
+})
+
+onUnmounted(() => {
+  toolbarObserver?.disconnect()
+  chromeObserver?.disconnect()
+})
 </script>
 
 <template>
@@ -24,20 +63,36 @@ const emit = defineEmits<{
       @toggle-theme="emit('toggle-theme')"
     />
 
-    <SidebarInset class="min-h-0 min-w-0 overflow-hidden">
-      <header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-        <SidebarTrigger class="-ml-1" />
-        <Separator
-          orientation="vertical"
-          class="mr-2 h-4 shrink-0 data-[orientation=vertical]:!self-center"
-        />
+    <SidebarInset
+      class="min-h-0 min-w-0 overflow-hidden"
+      :style="{ '--app-chrome-height': chromeHeight }"
+    >
+      <header ref="chromeRef" class="shrink-0 border-b">
+        <div class="flex h-16 items-center gap-2 px-4">
+          <SidebarTrigger class="-ml-1" />
+          <Separator
+            orientation="vertical"
+            class="mr-2 h-4 shrink-0 data-[orientation=vertical]:!self-center"
+          />
+          <div
+            id="page-header"
+            class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
+          />
+        </div>
+
         <div
-          id="page-header"
-          class="flex min-w-0 flex-1 items-center justify-between gap-4 overflow-hidden"
-        />
+          v-show="hasPageToolbar"
+          class="border-t border-border/80 bg-muted/20 px-4 py-2 lg:py-1.5"
+        >
+          <div
+            id="page-toolbar"
+            ref="pageToolbarRef"
+            class="w-full min-w-0"
+          />
+        </div>
       </header>
 
-      <div class="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-auto p-4">
+      <div class="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto px-4 pb-4 pt-2 lg:pt-4">
         <slot />
       </div>
     </SidebarInset>

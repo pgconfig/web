@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from "vue"
+import { RiWindowLine } from "@remixicon/vue"
 import { useRoute, useRouter } from "vue-router"
 import { ENVIRONMENT_OPTIONS } from "@/constants/environmentOptions"
 import { parseFormQuery } from "@/utils/formQuery"
@@ -40,6 +41,10 @@ const profileSelectWidth = computed(() => {
 
 <template>
   <div class="flex min-w-0 flex-1 items-center gap-2 sm:flex-none">
+    <RiWindowLine
+      class="size-3.5 shrink-0 text-muted-foreground"
+      aria-hidden="true"
+    />
     <label class="hidden shrink-0 text-sm font-medium text-muted-foreground sm:inline">
       Application profile
     </label>
