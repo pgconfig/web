@@ -27,6 +27,15 @@ const environmentName = computed({
     })
   },
 })
+
+const profileSelectWidth = computed(() => {
+  const longestLabelLength = ENVIRONMENT_OPTIONS.reduce(
+    (max, { label }) => Math.max(max, label.length),
+    0
+  )
+  // Match open dropdown width: longest label + horizontal padding & icons
+  return `calc(${longestLabelLength}ch + 3.75rem)`
+})
 </script>
 
 <template>
@@ -35,10 +44,12 @@ const environmentName = computed({
       Application profile
     </label>
     <Select v-model="environmentName">
-      <SelectTrigger class="w-full min-w-0 max-w-none sm:w-56">
+      <SelectTrigger
+        class="profile-select-trigger w-full min-w-0 max-w-none focus-visible:border-input focus-visible:ring-0"
+      >
         <SelectValue placeholder="Select profile" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent class="profile-select-content">
         <SelectItem
           v-for="opt in ENVIRONMENT_OPTIONS"
           :key="opt.value"
@@ -50,3 +61,22 @@ const environmentName = computed({
     </Select>
   </div>
 </template>
+
+<style scoped>
+.profile-select-trigger:focus,
+.profile-select-trigger:focus-visible {
+  box-shadow: none;
+  outline: none;
+}
+
+@media (min-width: 640px) {
+  .profile-select-trigger {
+    width: v-bind(profileSelectWidth);
+    min-width: v-bind(profileSelectWidth);
+  }
+
+  .profile-select-content {
+    min-width: v-bind(profileSelectWidth);
+  }
+}
+</style>
